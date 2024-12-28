@@ -1,24 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
-import { createChart, ColorType, ISeriesApi, AreaData, CrosshairMode } from 'lightweight-charts';
-import { ChartTimeFrame, TimeFrame } from './chart-timeframe';
-import { getChartInterval } from '@/lib/chart-utils';
-import { formatChartTime } from '@/lib/format-utils';
+import { createChart, ColorType, ISeriesApi, CrosshairMode } from 'lightweight-charts';
+import { TimeFrame } from './chart-timeframe';
+import { ChartTooltip } from './chart/tooltip';
+import { TimeFrameSelector } from './chart/timeframe-selector';
+import { useChartData } from '@/hooks/useChartData';
+import { cn } from '@/lib/utils';
 
 interface PriceChartProps {
   symbol: string;
+  timeframe: TimeFrame;
+  onTimeframeChange: (timeframe: TimeFrame) => void;
 }
 
-export function PriceChart({ symbol }: PriceChartProps) {
+interface TooltipData {
+  time: number;
+  price: number;
+  x: number;
+  y: number;
+}
+
+export function PriceChart({ symbol, timeframe, onTimeframeChange }: PriceChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<ReturnType<typeof createChart>>();
   const seriesRef = useRef<ISeriesApi<'Area'>>();
-  const [timeframe, setTimeframe] = useState<TimeFrame>('1D');
+  const [tooltip, setTooltip] = useState<TooltipData | null>(null);
+  const { data, isLoading, error } = useChartData(symbol, timeframe);
 
+  // Initialize chart
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
-    // Create chart
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
@@ -28,12 +39,8 @@ export function PriceChart({ symbol }: PriceChartProps) {
         vertLines: { visible: false },
         horzLines: { visible: false },
       },
-      rightPriceScale: {
-        visible: false,
-      },
-      leftPriceScale: {
-        visible: false,
-      },
+      rightPriceScale: { visible: false },
+      leftPriceScale: { visible: false },
       timeScale: {
         visible: false,
         borderVisible: false,
@@ -42,14 +49,8 @@ export function PriceChart({ symbol }: PriceChartProps) {
       },
       crosshair: {
         mode: CrosshairMode.Normal,
-        vertLine: {
-          visible: false,
-          labelVisible: false,
-        },
-        horzLine: {
-          visible: false,
-          labelVisible: false,
-        },
+        vertLine: { visible: false, labelVisible: false },
+        horzLine: { visible: false, labelVisible: false },
       },
       width: chartContainerRef.current.clientWidth,
       height: 400,
@@ -57,7 +58,6 @@ export function PriceChart({ symbol }: PriceChartProps) {
 
     chartRef.current = chart;
 
-    // Create area series
     const areaSeries = chart.addAreaSeries({
       lineColor: '#2962FF',
       topColor: '#2962FF',
@@ -74,18 +74,7 @@ export function PriceChart({ symbol }: PriceChartProps) {
 
     seriesRef.current = areaSeries;
 
-    // Create and style the tooltip
-    const toolTip = document.createElement('div');
-    toolTip.className = 'px-3 py-2 bg-popover text-popover-foreground rounded-lg shadow-md border';
-    toolTip.style.position = 'absolute';
-    toolTip.style.display = 'none';
-    toolTip.style.padding = '8px';
-    toolTip.style.zIndex = '1000';
-    toolTip.style.pointerEvents = 'none';
-    chartContainerRef.current.appendChild(toolTip);
-    tooltipRef.current = toolTip;
-
-    // Update tooltip on crosshair move
+    // Handle tooltip
     chart.subscribeCrosshairMove(param => {
       if (
         !param.point ||
@@ -95,46 +84,22 @@ export function PriceChart({ symbol }: PriceChartProps) {
         param.point.y < 0 ||
         param.point.y > chartContainerRef.current!.clientHeight
       ) {
-        toolTip.style.display = 'none';
+        setTooltip(null);
         return;
       }
 
       const price = param.seriesData.get(areaSeries)?.value;
       if (typeof price !== 'number') {
-        toolTip.style.display = 'none';
+        setTooltip(null);
         return;
       }
 
-      const dateStr = formatChartTime(param.time as number, timeframe);
-      const priceStr = new Intl.NumberFormat('en-AU', {
-        style: 'currency',
-        currency: 'AUD',
-      }).format(price);
-
-      toolTip.innerHTML = `
-        <div class="text-sm font-medium">${dateStr}</div>
-        <div class="text-muted-foreground text-xs">${priceStr}</div>
-      `;
-
-      const coordinate = areaSeries.priceToCoordinate(price);
-      let toolTipWidth = 100;
-      let toolTipHeight = 80;
-      let left = param.point.x + 20;
-
-      if (left > chartContainerRef.current!.clientWidth - toolTipWidth) {
-        left = param.point.x - toolTipWidth - 20;
-      }
-
-      let top = coordinate! - toolTipHeight / 2;
-      if (top < 0) {
-        top = 0;
-      } else if (top > chartContainerRef.current!.clientHeight - toolTipHeight) {
-        top = chartContainerRef.current!.clientHeight - toolTipHeight;
-      }
-
-      toolTip.style.left = left + 'px';
-      toolTip.style.top = top + 'px';
-      toolTip.style.display = 'block';
+      setTooltip({
+        time: param.time as number,
+        price,
+        x: param.point.x,
+        y: param.point.y,
+      });
     });
 
     // Handle resize
@@ -152,47 +117,42 @@ export function PriceChart({ symbol }: PriceChartProps) {
       chart.remove();
       window.removeEventListener('resize', handleResize);
     };
-  }, [timeframe]);
+  }, []);
 
+  // Update chart data
   useEffect(() => {
-    const fetchData = async () => {
-      if (!seriesRef.current) return;
-
-      const { binanceInterval, limit } = getChartInterval(timeframe);
-      
-      try {
-        const response = await fetch(
-          `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${binanceInterval}&limit=${limit}`
-        );
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        const chartData: AreaData[] = data.map((d: any) => ({
-          time: d[0] / 1000,
-          value: parseFloat(d[4]), // Close price
-        }));
-
-        seriesRef.current.setData(chartData);
-        chartRef.current?.timeScale().fitContent();
-      } catch (error) {
-        console.error('Failed to fetch chart data:', error);
-      }
-    };
-
-    fetchData();
-  }, [symbol, timeframe]);
+    if (!seriesRef.current || !data) return;
+    seriesRef.current.setData(data);
+    chartRef.current?.timeScale().fitContent();
+  }, [data]);
 
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <ChartTimeFrame value={timeframe} onValueChange={setTimeframe} />
+        <TimeFrameSelector value={timeframe} onValueChange={onTimeframeChange} />
       </div>
-      <div className="relative min-w-[700px] w-full">
-        <div ref={chartContainerRef} />
+      <div className={cn(
+        "relative min-h-[400px] w-full rounded-lg",
+        isLoading && "animate-pulse bg-muted"
+      )}>
+        <div ref={chartContainerRef} className="w-full" />
+        {tooltip && (
+          <ChartTooltip
+            time={tooltip.time}
+            price={tooltip.price}
+            timeframe={timeframe}
+            style={{
+              left: tooltip.x + 'px',
+              top: tooltip.y + 'px',
+              transform: 'translate(-50%, -100%)',
+            }}
+          />
+        )}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-destructive">
+            Failed to load chart data
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { CryptoPage } from '@/pages/crypto/index';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/crypto')({
-  component: CryptoPage,
+  beforeLoad: () => {
+    throw redirect({ to: '/buy-sell/bitcoin' });
+  },
 });

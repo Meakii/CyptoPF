@@ -26,7 +26,7 @@ export const MenuItem = ({
     <Link
       to={href}
       className={cn(
-        "flex items-center w-full transition-colors rounded-md",
+        "flex items-center w-full rounded-md",
         "hover:bg-accent/80 hover:text-accent-foreground",
         "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
         "active:bg-accent/90",

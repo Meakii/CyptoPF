@@ -4,7 +4,6 @@ import {
   DollarSign, 
   ArrowUpDown,
   Upload,
-  Download,
   Clock
 } from 'lucide-react';
 
