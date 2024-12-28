@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { SUPPORTED_CRYPTOCURRENCIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 interface AssetPrice {
   symbol: string;
@@ -68,9 +68,9 @@ export function AssetsTable({ prices = [] }: AssetsTableProps) {
                             priceData.change >= 0 ? "text-green-500" : "text-red-500"
                           )}>
                             {priceData.change >= 0 ? (
-                              <ArrowUp className="mr-1 h-4 w-4" />
+                              <Plus className="mr-1 h-4 w-4" />
                             ) : (
-                              <ArrowDown className="mr-1 h-4 w-4" />
+                              <Minus className="mr-1 h-4 w-4" />
                             )}
                             {Math.abs(priceData.change)}%
                           </div>

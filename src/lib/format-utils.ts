@@ -14,16 +14,19 @@ export function formatChartTime(timestamp: number, timeframe: TimeFrame): string
 }
 
 export async function formatUSDToAUD(usdPrice: number): Promise<string> {
+  const formatter = new Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+  });
+
   try {
     const response = await fetch("https://api.frankfurter.app/latest?from=USD&to=AUD");
     const data = await response.json();
     const audPrice = usdPrice * data.rates.AUD;
-    return new Intl.NumberFormat("en-AU", {
-      style: "currency",
-      currency: "AUD",
-    }).format(audPrice);
+    return formatter.format(audPrice);
   } catch (error) {
     console.error("Failed to convert currency:", error);
-    return `A$${usdPrice.toFixed(2)}`;
+    // Use the same formatter in the error case for consistency
+    return formatter.format(usdPrice);
   }
 }
