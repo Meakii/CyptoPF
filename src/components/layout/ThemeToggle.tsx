@@ -9,8 +9,8 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       className={`
         p-2 rounded-lg
-        hover:bg-accent/80 transition-colors
-        focus:outline-none focus:ring-2
+        hover:bg-(--accent)/80 transition-colors
+        focus:outline-hidden focus:ring-2
         focus:ring-ring
       `}
       aria-label="Toggle theme"

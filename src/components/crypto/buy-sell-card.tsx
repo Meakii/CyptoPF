@@ -19,7 +19,7 @@ export function BuySellCard({ symbol, timeframe, onTimeframeChange }: BuySellCar
   const { price, priceChange, isLoading, error } = useCryptoPrice(symbol);
 
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-[var(--radius-sm)] border-[var(--muted-border)] border-1 bg-card">
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="buy">Buy</TabsTrigger>

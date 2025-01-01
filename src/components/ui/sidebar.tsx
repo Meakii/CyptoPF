@@ -127,9 +127,9 @@ export function Sidebar() {
             key={href}
             href={href}
             ref={linksRef}
-            className="flex items-center rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            className="flex items-center rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-(--accent) hover:text-accent-foreground"
           >
-            <Icon className="menu-icon h-5 w-5 flex-shrink-0" />
+            <Icon className="menu-icon h-5 w-5 shrink-0" />
             <span className="menu-label ml-3 text-sm font-medium">
               {label}
             </span>

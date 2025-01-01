@@ -15,7 +15,7 @@ export const MenuSection = ({ section, isCollapsed, variants }: MenuSectionProps
       variants={variants} 
       className={cn(
         "py-4", // Increased vertical padding
-        "border-b border-muted/30 last:border-b-0"
+        "border-b border-[var(--muted-border)] last:border-b-0"
       )}
     >
       {!isCollapsed && (

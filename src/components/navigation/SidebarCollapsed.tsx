@@ -51,7 +51,7 @@ const itemVariants = {
 export const SidebarCollapsed = ({ onExpand }: SidebarCollapsedProps) => {
   return (
     <motion.div
-      className="mt-8"
+      className="mt-8 sticky top-0"
       variants={containerVariants}
       initial="initial"
       animate="animate"

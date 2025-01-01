@@ -13,8 +13,8 @@ interface HeaderProps {
 export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
   return (
     <header className={cn(
-      "sticky top-0 z-10 h-16 border-b",
-      "bg-background/80 backdrop-blur-sm"
+      "sticky top-0 z-10 h-16 border-b border-[var(--muted-border)]",
+      "bg-(--background)/60 backdrop-blur-lg"
     )}>
       <div className="h-full flex items-center justify-between px-4">
         <motion.button
@@ -22,8 +22,8 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
           disabled={isAnimating}
           className={cn(
             "p-2 rounded-lg",
-            "hover:bg-accent/80 transition-colors",
-            "disabled:opacity-50 focus:outline-none focus:ring-2",
+            "hover:bg-(--accent)/80 transition-colors",
+            "disabled:opacity-50 focus:outline-hidden focus:ring-2",
             "focus:ring-ring"
           )}
           whileHover={{ scale: 1.05 }}

@@ -26,7 +26,7 @@ export function AssetsTable({ prices = [] }: AssetsTableProps) {
   const [tab, setTab] = useState('all');
 
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-[var(--radius-sm)] border-[var(--muted-border)] border-1 bg-card">
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="all">All assets</TabsTrigger>
@@ -52,7 +52,7 @@ export function AssetsTable({ prices = [] }: AssetsTableProps) {
                     <TableRow key={crypto.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="flex-shrink-0 w-6 h-6">
+                          <div className="shrink-0 w-6 h-6">
                             <Icon width={24} height={24} />
                           </div>
                           <span className="font-medium">{crypto.name}</span>

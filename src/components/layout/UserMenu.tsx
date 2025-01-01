@@ -9,8 +9,8 @@ export function UserMenu() {
         <button
           className={`
             p-2 rounded-lg
-            hover:bg-accent/80 transition-colors
-            focus:outline-none focus:ring-2
+            hover:bg-(--accent)/80 transition-colors
+            focus:outline-hidden focus:ring-2
             focus:ring-ring
           `}
         >
@@ -19,13 +19,13 @@ export function UserMenu() {
       </PopoverTrigger>
       <PopoverContent className="w-56" align="end">
         <div className="space-y-2">
-          <div className="border-b pb-2">
+          <div className="border-b pb-2 border-[var(--muted-border)]">
             <p className="text-sm font-medium">john.doe@example.com</p>
           </div>
           <nav className="space-y-1">
             <Link
               to="/profile"
-              className="flex items-center space-x-2 rounded-lg px-3 py-2 text-sm hover:bg-accent/80 transition-colors"
+              className="flex items-center space-x-2 rounded-lg px-3 py-2 text-sm hover:bg-(--accent)/80 transition-colors"
             >
               <User className="w-4 h-4" />
               <span>Profile</span>

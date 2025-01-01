@@ -27,9 +27,9 @@ export const MenuItem = ({
       to={href}
       className={cn(
         "flex items-center w-full rounded-md",
-        "hover:bg-accent/80 hover:text-accent-foreground",
-        "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
-        "active:bg-accent/90",
+        "hover:bg-(--accent)/80 hover:text-accent-foreground",
+        "focus-visible:outline-hidden focus-visible:bg-(--accent) focus-visible:text-accent-foreground",
+        "active:bg-(--accent)/90",
         isCollapsed ? "justify-center px-3 py-3" : "space-x-4 px-3 py-3" // Increased vertical padding
       )}
     >

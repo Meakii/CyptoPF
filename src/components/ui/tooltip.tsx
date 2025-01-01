@@ -23,7 +23,7 @@ export function Tooltip({ content, children }: TooltipProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             className="absolute left-full ml-2 px-2 py-1 text-sm whitespace-nowrap
-                     bg-popover text-popover-foreground rounded-md shadow-lg
+                     bg-(--popover) text-popover-foreground rounded-md shadow-lg
                      border border-border/50"
             style={{ top: '50%', transform: 'translateY(-50%)' }}
           >
