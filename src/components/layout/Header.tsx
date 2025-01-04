@@ -13,7 +13,7 @@ interface HeaderProps {
 export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
   return (
     <header className={cn(
-      "sticky top-0 z-10 h-16 border-b border-[var(--muted-border)]",
+      "sticky top-0 z-10 h-16 border-b border-(--muted-border)",
       "bg-(--background)/60 backdrop-blur-lg"
     )}>
       <div className="h-full flex items-center justify-between px-4">

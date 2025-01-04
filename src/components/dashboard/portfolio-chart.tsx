@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { TimeFrame } from '@/components/crypto/chart-timeframe';
+import { TimeFrame } from "@/lib/types/timeframe";
+// import { TimeFrame } from '@/components/crypto/chart-timeframe';
 import { PriceChart } from '@/components/crypto/price-chart';
 import { PortfolioHeader } from './portfolio/header';
 import { ValueDisplay } from './portfolio/value-display';

@@ -28,11 +28,11 @@ export function BuySellPage() {
   return (
     <PageTransition>
       <div className="container space-y-8 p-8">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold tracking-tight">
             Trade {crypto.name}
           </h1>
-        </div>
+        </div> */}
 
         <div className="grid gap-8 lg:grid-cols-2">
           <BuySellCard 
