@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AnimatedTabs, AnimatedTabsList, AnimatedTabsTrigger, AnimatedTabsContent } from "@/components/ui/animated-tabs"
 import {
   Table,
   TableBody,
@@ -27,13 +28,14 @@ export function AssetsTable({ prices = [] }: AssetsTableProps) {
 
   return (
     <div className="rounded-[var(--radius-sm)] border-[var(--muted-border)] border-1 bg-card">
-      <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="all">All assets</TabsTrigger>
-          <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
-        </TabsList>
+
+<AnimatedTabs value={tab} onValueChange={setTab} className="w-full">
+        <AnimatedTabsList className="grid w-full grid-cols-2" variant="underlined" value={tab}>
+          <AnimatedTabsTrigger value="all" variant="underlined">All assets</AnimatedTabsTrigger>
+          <AnimatedTabsTrigger value="watchlist" variant="underlined">Watchlist</AnimatedTabsTrigger>
+        </AnimatedTabsList>
         
-        <TabsContent value="all" className="mt-0">
+        <AnimatedTabsContent value="all" className="mt-0">
           <div className="relative overflow-x-auto">
             <Table>
               <TableHeader>
@@ -82,14 +84,14 @@ export function AssetsTable({ prices = [] }: AssetsTableProps) {
               </TableBody>
             </Table>
           </div>
-        </TabsContent>
+        </AnimatedTabsContent>
 
-        <TabsContent value="watchlist" className="mt-0">
+        <AnimatedTabsContent value="watchlist" className="mt-0">
           <div className="p-6 text-center text-muted-foreground">
             Watchlist functionality coming soon
           </div>
-        </TabsContent>
-      </Tabs>
+        </AnimatedTabsContent>
+      </AnimatedTabs>
     </div>
   );
 }
