@@ -144,7 +144,7 @@ export function PriceChart({
   }, [data]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 z-0">
       {showTimeframeSelector && (
         <div className="flex justify-start">
           <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
@@ -152,13 +152,13 @@ export function PriceChart({
       )}
       <div
         className={cn(
-          "relative w-full rounded-lg",
+          "relative w-full rounded-lg z-0",
           height,
           className,
           isLoading && "animate-pulse bg-muted"
         )}
       >
-        <div ref={chartContainerRef} className="h-full w-full" />
+        <div ref={chartContainerRef} className="h-full w-full z-0" />
         {tooltip && (
           <ChartTooltip
             time={tooltip.time}
