@@ -52,7 +52,9 @@ export function CryptoSelector() {
           })()}
         </div>
       )}
-      {selectedCrypto ? selectedCrypto.name : "Select cryptocurrency..."}
+      <span className="btcm-heading-md">
+      {selectedCrypto ? selectedCrypto.name : "Select asset..."}
+      </span>
     </div>
     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
   </Button>
@@ -75,13 +77,13 @@ export function CryptoSelector() {
                   )}
                 />
                 <div className="flex items-center gap-2">
-                  <div className="shrink-0 w-6 h-6">
+                  <div className="shrink-0 w-5 h-5">
                     {(() => {
                       const Icon = crypto.icon;
                       return <Icon width={18} height={18} />;
                     })()}
                   </div>
-                  {crypto.name}
+                   {crypto.name}
                 </div>
               </CommandItem>
               // <CommandItem

@@ -34,7 +34,7 @@ export function BuySellPage() {
           </h1>
         </div> */}
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2 mx-10 py-8">
           <BuySellCard 
             symbol={crypto.symbol}
             timeframe={timeframe}

@@ -33,7 +33,7 @@ export function PageTransition({ children }: PageTransitionProps) {
       exit="exit"
       variants={pageVariants}
       transition={pageTransition}
-      className="p-8"
+      className="p-0"
     >
       {children}
     </motion.div>

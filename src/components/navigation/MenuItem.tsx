@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { cn } from "@/lib/utils";
-
 import { Tooltip } from '@/components/ui/tooltip';
 
 interface MenuItemProps {
@@ -12,7 +11,27 @@ interface MenuItemProps {
   isCollapsed: boolean;
   variants?: any;
   sectionTitle?: string;
+  childRoutes?: string[];
 }
+
+const isRouteActive = (href: string, childRoutes: string[] | undefined, currentPath: string): boolean => {
+  // Check direct match
+  if (currentPath === href) return true;
+  
+  // Check child routes if they exist
+  if (childRoutes) {
+    return childRoutes.some(childRoute => {
+      // Handle dynamic routes by replacing params with actual values
+      if (childRoute.includes('$')) {
+        const pattern = childRoute.replace('$cryptoId', '[^/]+');
+        return new RegExp(`^${pattern}$`).test(currentPath);
+      }
+      return currentPath === childRoute;
+    });
+  }
+  
+  return false;
+};
 
 export const MenuItem = ({ 
   icon: Icon, 
@@ -20,22 +39,38 @@ export const MenuItem = ({
   href, 
   isCollapsed, 
   variants,
-  sectionTitle 
+  sectionTitle,
+  childRoutes 
 }: MenuItemProps) => {
+  const router = useRouter();
+  const currentPath = router.state.location.pathname;
+  const isActive = isRouteActive(href, childRoutes, currentPath);
+
   const content = (
     <Link
       to={href}
       className={cn(
-        "flex items-center w-full rounded-md",
-        "hover:bg-(--accent)/80 hover:text-accent-foreground",
-        "focus-visible:outline-hidden focus-visible:bg-(--accent) focus-visible:text-accent-foreground",
+        "flex items-center w-full rounded-(--radius-sm) text-(--muted-foreground) relative",
+        "hover:bg-(--accent) hover:text-accent-foreground",
+        "focus-visible:ring-1 focus-visible:ring-(--ring) focus-visible:ring-offset-0",
+        "focus-visible:outline-hidden focus-visible:bg-(--accent) focus-visible:text-(--accent-foreground)",
         "active:bg-(--accent)/90",
-        isCollapsed ? "justify-center px-3 py-3" : "space-x-4 px-3 py-3" // Increased vertical padding
+        "[&[aria-current='page']]:bg-(--accent) [&[aria-current='page']]:text-(--accent-foreground) ",
+        "[&[aria-current='page']]:after:absolute",
+        "[&[aria-current='page']]:after:bottom-[0.1875rem] ",
+        "[&[aria-current='page']]:after:right-0",
+        "[&[aria-current='page']]:after:top-[0.1875rem]",
+        "[&[aria-current='page']]:after:w-[0.125rem]",
+        "[&[aria-current='page']]:after:rounded-full",
+        "[&[aria-current='page']]:after:bg-(--primary-border)",
+        "[&[aria-current='page']]:after:content-['']",
+        isCollapsed ? "justify-center px-3 py-3" : "space-x-4 px-3 py-3"
       )}
+      aria-current={isActive ? 'page' : undefined}
     >
       <Icon className="w-4 h-4" />
       {!isCollapsed && (
-        <span className="text-sm font-medium">
+        <span className="btcm-label-sm">
           {label}
         </span>
       )}
@@ -59,3 +94,66 @@ export const MenuItem = ({
     </motion.div>
   );
 }
+
+// import { motion } from 'framer-motion';
+// import { LucideIcon } from 'lucide-react';
+// import { Link } from '@tanstack/react-router';
+// import { cn } from "@/lib/utils";
+
+// import { Tooltip } from '@/components/ui/tooltip';
+
+// interface MenuItemProps {
+//   icon: LucideIcon;
+//   label: string;
+//   href: string;
+//   isCollapsed: boolean;
+//   variants?: any;
+//   sectionTitle?: string;
+// }
+
+// export const MenuItem = ({ 
+//   icon: Icon, 
+//   label, 
+//   href, 
+//   isCollapsed, 
+//   variants,
+//   sectionTitle 
+// }: MenuItemProps) => {
+//   const content = (
+//     <Link
+//       to={href}
+//       className={cn(
+//         "flex items-center w-full rounded-(--radius-sm) text-(--muted-foreground)",
+//         "hover:bg-(--accent) hover:text-accent-foreground",
+//         "focus-visible:outline-hidden focus-visible:bg-(--accent) focus-visible:text-(--accent-foreground)",
+//         "active:bg-(--accent)/90",
+//         "[&[aria-current='page']]:bg-(--accent)",
+//         isCollapsed ? "justify-center px-3 py-3" : "space-x-4 px-3 py-3" // Increased vertical padding
+//       )}
+//     >
+//       <Icon className="w-4 h-4" />
+//       {!isCollapsed && (
+//         <span className="btcm-label-sm">
+//           {label}
+//         </span>
+//       )}
+//     </Link>
+//   );
+
+//   if (isCollapsed) {
+//     const tooltipContent = sectionTitle ? `${sectionTitle} ${label}` : label;
+//     return (
+//       <motion.div variants={variants}>
+//         <Tooltip content={tooltipContent}>
+//           {content}
+//         </Tooltip>
+//       </motion.div>
+//     );
+//   }
+
+//   return (
+//     <motion.div variants={variants}>
+//       {content}
+//     </motion.div>
+//   );
+// }

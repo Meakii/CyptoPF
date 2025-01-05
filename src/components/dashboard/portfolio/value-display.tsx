@@ -17,20 +17,20 @@ export function ValueDisplay({
   performancePercentage
 }: ValueDisplayProps) {
   return (
-    <div className="space-y-1">
-      <div className="text-2xl font-bold">
+    <div className="mt-[-6px]">
+      <div className="btcm-heading-xl">
         {isHidden ? '••••••' : value}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-(--muted-foreground)">
           {timeframe} change
         </span>
         <div className={cn(
           "flex items-center gap-1",
-          performancePercentage >= 0 ? "text-green-500" : "text-red-500"
+          performancePercentage >= 0 ? "text-(--uptrend-foreground)" : "text-(--downtrend-foreground)"
         )}>
           <span>{performanceAmount}</span>
-          <span>({performancePercentage >= 0 ? '+' : ''}{performancePercentage.toFixed(2)}%)</span>
+          <span>({performancePercentage >= 0 ? '+' : '-'}{performancePercentage.toFixed(2)}%)</span>
         </div>
       </div>
     </div>

@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  createChart,
-  ColorType,
-  ISeriesApi,
-  CrosshairMode,
-} from "lightweight-charts";
+import {  createChart,  ColorType,  ISeriesApi,  CrosshairMode,} from "lightweight-charts";
 import { TimeFrame, ChartTimeFrame } from "./chart-timeframe";
 import { ChartTooltip } from "./chart/tooltip";
 import { useChartData } from "@/hooks/useChartData";
@@ -139,7 +134,7 @@ export function PriceChart({
   return (
     <div className="space-y-4">
       {showTimeframeSelector && (
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <ChartTimeFrame
             value={timeframe}
             onValueChange={onTimeframeChange}
