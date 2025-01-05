@@ -14,7 +14,7 @@ export const CURRENCY_CONFIGS: Record<string, CurrencyConfig> = {
   JPY: { symbol: '¥', position: 'prefix' },
 };
 
-// Default currency if none specified
+// Default currency 
 export const DEFAULT_CURRENCY = 'AUD';
 
 // Helper function to format currency
