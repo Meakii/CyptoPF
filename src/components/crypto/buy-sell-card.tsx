@@ -65,6 +65,7 @@ export function BuySellCard({
                 <PriceChart 
                   symbol={symbol} 
                   timeframe={timeframe}
+                  height="h-[300px] md:h-[400px] lg:h-[128px]"
                   onTimeframeChange={onTimeframeChange}
                 />
               </div>
