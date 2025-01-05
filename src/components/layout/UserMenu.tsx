@@ -14,7 +14,7 @@ export function UserMenu() {
             focus:ring-ring
           `}
         >
-          <User className="w-5 h-5" />
+          <User className="w-5 h-5 text-(--muted-foreground)" />
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-56" align="end">

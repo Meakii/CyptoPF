@@ -21,7 +21,7 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
           onClick={onToggle}
           disabled={isAnimating}
           className={cn(
-            "p-2 rounded-lg",
+            "p-2 rounded-lg text-(--muted-foreground)",
             "hover:bg-(--accent)/80 transition-colors",
             "disabled:opacity-50 focus:outline-hidden focus:ring-2",
             "focus:ring-ring"

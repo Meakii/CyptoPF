@@ -17,7 +17,7 @@ export function TableHeader({
 }: TableHeaderProps) {
   return (
     <div className="flex items-center justify-between">
-      <CardTitle>Holdings Summary</CardTitle>
+      <CardTitle className="text-(--muted-foreground)">Holdings Summary</CardTitle>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <Checkbox
@@ -27,7 +27,7 @@ export function TableHeader({
           />
           <label
             htmlFor="holdings"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="btcm-label-sm text-(--muted-foreground) peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             Current holdings
           </label>
