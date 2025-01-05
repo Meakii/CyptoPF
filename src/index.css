@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* @config '../tailwind.config.js'; */
+/* @config '../tailwind.config.ts'; */
 @theme {
   --figtree: "Figtree", Helvetica, Arial, sans-serif;
   --primitive-sand-50: #fcfbf8;
@@ -287,10 +287,16 @@
   --shadow-sm: 0rem 0.125rem 0.375rem 0rem rgba(0, 0, 0, 0.04);
   --shadow-md: 0rem 0.375rem 1rem 0rem rgba(0, 0, 0, 0.04);
   --shadow-lg: 0rem 0.75rem 1.5rem 0rem rgba(0, 0, 0, 0.04);
+
+  --loading: var(--primitive-zinc-300);
+  --loading-foreground: var(--primitive-zinc-100);
 }
 
 @layer base {
   :root.dark {
+
+    --loading: var(--primitive-zinc-700);
+    --loading-foreground: var(--primitive-zinc-500);
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -426,7 +432,29 @@
 } */
 
 
+@keyframes shimmer {
+  from {
+    background-position: 100%;
+  }
+  to {
+    background-position: 0%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
 @layer components {
+
+  [data-skeleton-loading="true"] {
+    @apply !pointer-events-none !animate-[shimmer_2s_infinite_ease-in-out] !select-none rounded-[4px] !border-transparent !bg-transparent !decoration-clone !text-transparent !no-underline !shadow-none !outline-none ![background-image:linear-gradient(to_right,var(--loading)_33%,var(--loading-foreground),var(--loading)_66%)] ![background-size:300%] [&>*]:!invisible;
+  }
   /* Headings */
   .btcm-heading-2xl {
     @apply text-pretty text-[2rem] font-semibold leading-tight tracking-tight;
