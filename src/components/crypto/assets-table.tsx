@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AnimatedTabs, AnimatedTabsList, AnimatedTabsTrigger, AnimatedTabsContent } from "@/components/ui/animated-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { SUPPORTED_CRYPTOCURRENCIES } from "@/lib/constants";
 import { parseAndFormatCurrency } from "@/lib/currency-utils";
 import { cn } from "@/lib/utils";
@@ -20,6 +22,13 @@ interface AssetsTableProps {
 
 export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps) {
   const [tab, setTab] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredCryptos = SUPPORTED_CRYPTOCURRENCIES.filter(crypto => {
+    const search = searchQuery.toLowerCase();
+    return crypto.name.toLowerCase().includes(search) || 
+           crypto.symbol.toLowerCase().includes(search);
+  });
 
   return (
     <div className="rounded-[var(--radius-sm)] border-[var(--border)] border-1 bg-card">
@@ -34,6 +43,17 @@ export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps)
         </AnimatedTabsList>
 
         <AnimatedTabsContent value="all" className="mt-0">
+          <div className="p-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search assets..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 w-full"
+              />
+            </div>
+          </div>
           <div className="relative overflow-x-auto">
             <Table>
               <TableHeader>
@@ -44,7 +64,7 @@ export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps)
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {SUPPORTED_CRYPTOCURRENCIES.map((crypto) => {
+                {filteredCryptos.map((crypto) => {
                   const priceData = prices.find((p) => p.symbol === crypto.symbol);
                   const Icon = crypto.icon;
 
@@ -111,6 +131,13 @@ export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps)
                     </TableRow>
                   );
                 })}
+                {filteredCryptos.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={3} className="text-center h-24 text-muted-foreground">
+                      No assets found matching your search
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
