@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { AnimatedTabs, AnimatedTabsList, AnimatedTabsTrigger, AnimatedTabsContent } from "@/components/ui/animated-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SUPPORTED_CRYPTOCURRENCIES } from "@/lib/constants";
@@ -48,54 +49,65 @@ export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps)
                   const Icon = crypto.icon;
 
                   return (
-                    <TableRow key={crypto.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <div className="shrink-0 w-6 h-6">
-                            {isLoading ? (
-                              <div {...skeleton({ loading: true, image: true })} className="h-6 w-6 rounded-full" />
-                            ) : (
-                              <Icon width={24} height={24} />
-                            )}
+                    <TableRow 
+                      key={crypto.id} 
+                      className="cursor-pointer hover:bg-(--layer-high) transition-colors"
+                      role="link"
+                    >
+                      <Link 
+                        to="/buy-sell/$cryptoId" 
+                        params={{ cryptoId: crypto.id }}
+                        className="contents"
+                      >
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <div className="shrink-0 w-6 h-6">
+                              {isLoading ? (
+                                <div {...skeleton({ loading: true, image: true })} className="h-6 w-6 rounded-full" />
+                              ) : (
+                                <Icon width={24} height={24} />
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="" {...skeleton({ loading: isLoading })}>
+                                {isLoading ? "Loading..." : crypto.name}
+                              </span>
+                              <span 
+                                className="text-sm text-muted-foreground" 
+                                {...skeleton({ loading: isLoading, className: "h-4 w-12" })}
+                              >
+                                {isLoading ? "Loading..." : crypto.symbol.replace('USDT', '')}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex flex-col">
-                            <span className="" {...skeleton({ loading: isLoading })}>
-                              {isLoading ? "Loading..." : crypto.name}
-                            </span>
-                            <span className="btcm-label-xs text-(--muted-foreground)" 
-                              {...skeleton({ loading: isLoading, className: "h-2 w-12 mt-2" })}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span {...skeleton({ loading: isLoading })}>
+                            {isLoading
+                              ? "Loading..."
+                              : priceData?.price
+                              ? parseAndFormatCurrency(priceData.price)
+                              : "-"}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right btcm-label-sm">
+                          {isLoading ? (
+                            <span {...skeleton({ loading: true })}>Loading...</span>
+                          ) : priceData ? (
+                            <div
+                              className={cn(
+                                "flex items-center justify-end",
+                                priceData.change >= 0 ? "text-(--uptrend-foreground)" : "text-(--downtrend-foreground)"
+                              )}
                             >
-                              {isLoading ? "Loading..." : crypto.symbol.replace('USDT', '')}
-                            </span>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span {...skeleton({ loading: isLoading })}>
-                          {isLoading
-                            ? "Loading..."
-                            : priceData?.price
-                            ? parseAndFormatCurrency(priceData.price)
-                            : "-"}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right btcm-label-sm">
-                        {isLoading ? (
-                          <span {...skeleton({ loading: true })}>Loading...</span>
-                        ) : priceData ? (
-                          <div
-                            className={cn(
-                              "flex items-center justify-end",
-                              priceData.change >= 0 ? "text-(--uptrend-foreground)" : "text-(--downtrend-foreground)"
-                            )}
-                          >
-                            {priceData.change >= 0 ? <span>+</span> : <span>-</span>}
-                            {Math.abs(priceData.change).toFixed(2)}%
-                          </div>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
+                              {priceData.change >= 0 ? <span>+</span> : <span>-</span>}
+                              {Math.abs(priceData.change).toFixed(2)}%
+                            </div>
+                          ) : (
+                            "-"
+                          )}
+                        </TableCell>
+                      </Link>
                     </TableRow>
                   );
                 })}
