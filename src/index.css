@@ -391,6 +391,8 @@
 @layer utilities {
   :root {
     font-family: "Figtree", system-ui, Avenir, Helvetica, Arial, sans-serif;
+    /* font-family: 'PlusJakartaSans', 'Arial', sans-serif; */
+
     line-height: 1.5;
     font-weight: 400;
     font-variant-numeric: tabular-nums;
@@ -526,4 +528,88 @@
   .btcm-link {
     @apply text-foreground underline decoration-primary decoration-[0.2em] underline-offset-[0.3em] hocus:decoration-primary-hocus;
   } */
+}
+
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Light';
+ src: url('./fonts/Figtree-Light.woff2') format('woff2-variations'),
+ url('./fonts/Figtree-Light.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Regular';
+  src: url('./fonts/Figtree-Regular.woff2') format('woff2-variations'),
+  url('./fonts/Figtree-Regular.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 600;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'SemiBold';
+  src: url('./fonts/Figtree-SemiBold.woff2') format('woff2-variations'),
+  url('./fonts/Figtree-SemiBold.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 700;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'Bold';
+  src: url('./fonts/Figtree-Bold.woff2') format('woff2-variations'),
+  url('./fonts/Figtree-Bold.woff') format('woff-variations');
+}
+
+@font-face {
+  font-family: 'PlusJakartaSans';
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Light';
+ src: url('./fonts/PlusJakartaSans-Light.woff2') format('woff2-variations'),
+ url('./fonts/PlusJakartaSans-Lightwoff') format('woff-variations');
+
+}
+@font-face {
+  font-family: 'PlusJakartaSans';
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Regular';
+  src: url('./fonts/PlusJakartaSans-Regular.woff2') format('woff2-variations'),
+  url('./fonts/PlusJakartaSans-Regular.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'PlusJakartaSans';
+  font-weight: 600;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'SemiBold';
+  src: url('./fonts/PlusJakartaSans-SemiBold.woff2') format('woff2-variations'),
+  url('/fonts/PlusJakartaSans-SemiBold.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'PlusJakartaSans';
+  font-weight: 700;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'Bold';
+  src: url('./fonts/PlusJakartaSans-Bold.woff2') format('woff2-variations'),
+  url('./fonts/PlusJakartaSans-Bold.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'PlusJakartaSans';
+  font-weight: 800;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'ExtraBold';
+  src: url('./fonts/PlusJakartaSans-ExtraBold.woff2') format('woff2-variations'),
+  url('./fonts/PlusJakartaSans-ExtraBold.woff') format('woff-variations');
 }
