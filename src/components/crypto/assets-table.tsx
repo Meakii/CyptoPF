@@ -58,9 +58,16 @@ export function AssetsTable({ prices = [], isLoading = true }: AssetsTableProps)
                               <Icon width={24} height={24} />
                             )}
                           </div>
-                          <span className="" {...skeleton({ loading: isLoading })}>
-                            {isLoading ? "Loading..." : crypto.name}
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="" {...skeleton({ loading: isLoading })}>
+                              {isLoading ? "Loading..." : crypto.name}
+                            </span>
+                            <span className="btcm-label-xs text-(--muted-foreground)" 
+                              {...skeleton({ loading: isLoading, className: "h-2 w-12 mt-2" })}
+                            >
+                              {isLoading ? "Loading..." : crypto.symbol.replace('USDT', '')}
+                            </span>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
