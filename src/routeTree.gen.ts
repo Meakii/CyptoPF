@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as WithdrawImport } from './routes/withdraw'
 import { Route as TransactionsImport } from './routes/transactions'
+import { Route as MarketPricesImport } from './routes/market-prices'
 import { Route as DepositCryptoImport } from './routes/deposit-crypto'
 import { Route as DepositAudImport } from './routes/deposit-aud'
 import { Route as CryptoImport } from './routes/crypto'
@@ -30,6 +31,12 @@ const WithdrawRoute = WithdrawImport.update({
 const TransactionsRoute = TransactionsImport.update({
   id: '/transactions',
   path: '/transactions',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MarketPricesRoute = MarketPricesImport.update({
+  id: '/market-prices',
+  path: '/market-prices',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DepositCryptoImport
       parentRoute: typeof rootRoute
     }
+    '/market-prices': {
+      id: '/market-prices'
+      path: '/market-prices'
+      fullPath: '/market-prices'
+      preLoaderRoute: typeof MarketPricesImport
+      parentRoute: typeof rootRoute
+    }
     '/transactions': {
       id: '/transactions'
       path: '/transactions'
@@ -126,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
+  '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
@@ -136,6 +151,7 @@ export interface FileRoutesByTo {
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
+  '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
@@ -147,6 +163,7 @@ export interface FileRoutesById {
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
+  '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
@@ -159,6 +176,7 @@ export interface FileRouteTypes {
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
+    | '/market-prices'
     | '/transactions'
     | '/withdraw'
     | '/buy-sell/$cryptoId'
@@ -168,6 +186,7 @@ export interface FileRouteTypes {
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
+    | '/market-prices'
     | '/transactions'
     | '/withdraw'
     | '/buy-sell/$cryptoId'
@@ -177,6 +196,7 @@ export interface FileRouteTypes {
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
+    | '/market-prices'
     | '/transactions'
     | '/withdraw'
     | '/buy-sell/$cryptoId'
@@ -188,6 +208,7 @@ export interface RootRouteChildren {
   CryptoRoute: typeof CryptoRoute
   DepositAudRoute: typeof DepositAudRoute
   DepositCryptoRoute: typeof DepositCryptoRoute
+  MarketPricesRoute: typeof MarketPricesRoute
   TransactionsRoute: typeof TransactionsRoute
   WithdrawRoute: typeof WithdrawRoute
   BuySellCryptoIdRoute: typeof BuySellCryptoIdRoute
@@ -198,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   CryptoRoute: CryptoRoute,
   DepositAudRoute: DepositAudRoute,
   DepositCryptoRoute: DepositCryptoRoute,
+  MarketPricesRoute: MarketPricesRoute,
   TransactionsRoute: TransactionsRoute,
   WithdrawRoute: WithdrawRoute,
   BuySellCryptoIdRoute: BuySellCryptoIdRoute,
@@ -217,6 +239,7 @@ export const routeTree = rootRoute
         "/crypto",
         "/deposit-aud",
         "/deposit-crypto",
+        "/market-prices",
         "/transactions",
         "/withdraw",
         "/buy-sell/$cryptoId"
@@ -233,6 +256,9 @@ export const routeTree = rootRoute
     },
     "/deposit-crypto": {
       "filePath": "deposit-crypto.tsx"
+    },
+    "/market-prices": {
+      "filePath": "market-prices.tsx"
     },
     "/transactions": {
       "filePath": "transactions.tsx"

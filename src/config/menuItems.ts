@@ -4,7 +4,8 @@ import {
   DollarSign, 
   ArrowUpDown,
   Upload,
-  Clock
+  Clock,
+  LineChart
 } from 'lucide-react';
 
 export interface MenuItem {
@@ -23,7 +24,9 @@ export const menuSections: MenuSectionType[] = [
   {
     title: "Explore",
     items: [
-      { icon: LayoutDashboard, label: "Dashboard", href: "/" }
+      { icon: LayoutDashboard, label: "Dashboard", href: "/" },
+      { icon: LayoutDashboard, label: "Market Prices", href: "/market-prices" } // Add this new item
+
     ]
   },
   {

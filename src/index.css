@@ -1,7 +1,13 @@
-@import "tailwindcss";
+/* @import "tailwindcss"; */
 /* @config '../tailwind.config.ts'; */
-@theme {
-  --figtree: "Figtree", Helvetica, Arial, sans-serif;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+   --figtree: "Figtree", Helvetica, Arial, sans-serif;
   --primitive-sand-50: #fcfbf8;
   --primitive-sand-100: #fffbf0;
   --primitive-sand-200: #fcf6e5;
@@ -290,12 +296,9 @@
 
   --loading: var(--primitive-zinc-300);
   --loading-foreground: var(--primitive-zinc-100);
-}
-
-@layer base {
-  :root.dark {
-
-    --loading: var(--primitive-zinc-700);
+  }
+  .dark {
+     --loading: var(--primitive-zinc-700);
     --loading-foreground: var(--primitive-zinc-500);
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -387,6 +390,17 @@
     --shadow-lg: 0rem 0.75rem 1.5rem 0rem rgba(0, 0, 0, 0.4);
   }
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
 
 @layer utilities {
   :root {
