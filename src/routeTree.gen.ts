@@ -17,8 +17,10 @@ import { Route as MarketPricesImport } from './routes/market-prices'
 import { Route as DepositCryptoImport } from './routes/deposit-crypto'
 import { Route as DepositAudImport } from './routes/deposit-aud'
 import { Route as CryptoImport } from './routes/crypto'
+import { Route as AssetsImport } from './routes/assets'
 import { Route as IndexImport } from './routes/index'
 import { Route as BuySellCryptoIdImport } from './routes/buy-sell.$cryptoId'
+import { Route as AssetsCryptoIdImport } from './routes/assets.$cryptoId'
 
 // Create/Update Routes
 
@@ -58,6 +60,12 @@ const CryptoRoute = CryptoImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AssetsRoute = AssetsImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -70,6 +78,12 @@ const BuySellCryptoIdRoute = BuySellCryptoIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AssetsCryptoIdRoute = AssetsCryptoIdImport.update({
+  id: '/$cryptoId',
+  path: '/$cryptoId',
+  getParentRoute: () => AssetsRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -79,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/assets': {
+      id: '/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsImport
       parentRoute: typeof rootRoute
     }
     '/crypto': {
@@ -123,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WithdrawImport
       parentRoute: typeof rootRoute
     }
+    '/assets/$cryptoId': {
+      id: '/assets/$cryptoId'
+      path: '/$cryptoId'
+      fullPath: '/assets/$cryptoId'
+      preLoaderRoute: typeof AssetsCryptoIdImport
+      parentRoute: typeof AssetsImport
+    }
     '/buy-sell/$cryptoId': {
       id: '/buy-sell/$cryptoId'
       path: '/buy-sell/$cryptoId'
@@ -135,37 +163,54 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AssetsRouteChildren {
+  AssetsCryptoIdRoute: typeof AssetsCryptoIdRoute
+}
+
+const AssetsRouteChildren: AssetsRouteChildren = {
+  AssetsCryptoIdRoute: AssetsCryptoIdRoute,
+}
+
+const AssetsRouteWithChildren =
+  AssetsRoute._addFileChildren(AssetsRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assets': typeof AssetsRouteWithChildren
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
   '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
+  '/assets/$cryptoId': typeof AssetsCryptoIdRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assets': typeof AssetsRouteWithChildren
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
   '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
+  '/assets/$cryptoId': typeof AssetsCryptoIdRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/assets': typeof AssetsRouteWithChildren
   '/crypto': typeof CryptoRoute
   '/deposit-aud': typeof DepositAudRoute
   '/deposit-crypto': typeof DepositCryptoRoute
   '/market-prices': typeof MarketPricesRoute
   '/transactions': typeof TransactionsRoute
   '/withdraw': typeof WithdrawRoute
+  '/assets/$cryptoId': typeof AssetsCryptoIdRoute
   '/buy-sell/$cryptoId': typeof BuySellCryptoIdRoute
 }
 
@@ -173,38 +218,45 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assets'
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
     | '/market-prices'
     | '/transactions'
     | '/withdraw'
+    | '/assets/$cryptoId'
     | '/buy-sell/$cryptoId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/assets'
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
     | '/market-prices'
     | '/transactions'
     | '/withdraw'
+    | '/assets/$cryptoId'
     | '/buy-sell/$cryptoId'
   id:
     | '__root__'
     | '/'
+    | '/assets'
     | '/crypto'
     | '/deposit-aud'
     | '/deposit-crypto'
     | '/market-prices'
     | '/transactions'
     | '/withdraw'
+    | '/assets/$cryptoId'
     | '/buy-sell/$cryptoId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssetsRoute: typeof AssetsRouteWithChildren
   CryptoRoute: typeof CryptoRoute
   DepositAudRoute: typeof DepositAudRoute
   DepositCryptoRoute: typeof DepositCryptoRoute
@@ -216,6 +268,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssetsRoute: AssetsRouteWithChildren,
   CryptoRoute: CryptoRoute,
   DepositAudRoute: DepositAudRoute,
   DepositCryptoRoute: DepositCryptoRoute,
@@ -236,6 +289,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/assets",
         "/crypto",
         "/deposit-aud",
         "/deposit-crypto",
@@ -247,6 +301,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/assets": {
+      "filePath": "assets.tsx",
+      "children": [
+        "/assets/$cryptoId"
+      ]
     },
     "/crypto": {
       "filePath": "crypto.tsx"
@@ -265,6 +325,10 @@ export const routeTree = rootRoute
     },
     "/withdraw": {
       "filePath": "withdraw.tsx"
+    },
+    "/assets/$cryptoId": {
+      "filePath": "assets.$cryptoId.tsx",
+      "parent": "/assets"
     },
     "/buy-sell/$cryptoId": {
       "filePath": "buy-sell.$cryptoId.tsx"
