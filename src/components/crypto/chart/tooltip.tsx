@@ -17,7 +17,7 @@ export function ChartTooltip({ time, price, timeframe, style }: ChartTooltipProp
 
   return (
     <div 
-      className="absolute px-3 py-2 bg-(--popover) text-(--popover-foreground) rounded-[var(--radius-sm)]  shadow-md border-[var(--muted-border)] border-1 pointer-events-none z-50"
+      className="absolute px-3 py-2 bg-[var(--popover)] text-[var(--popover-foreground)] rounded-[var(--radius-sm)]  shadow-md border-[var(--muted-border)] border pointer-events-none z-50"
       style={style}
     >
       <div className="text-sm font-medium">{formattedTime}</div>

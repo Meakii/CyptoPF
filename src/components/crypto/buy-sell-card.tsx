@@ -26,7 +26,7 @@ export function BuySellCard({
   });
 
   return (
-    <div className="rounded-(--radius-sm) border-(--border) border-1 bg-card">
+    <div className="rounded-[var(--radius-sm)] border-[var(--border)] border bg-card">
       <AnimatedTabs value={tab} onValueChange={setTab} className="w-full">
         <AnimatedTabsList className="grid w-full grid-cols-2" variant="underlined" value={tab}>
           <AnimatedTabsTrigger value="buy" variant="underlined">Buy</AnimatedTabsTrigger>

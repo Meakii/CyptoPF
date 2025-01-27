@@ -1,9 +1,10 @@
 import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import Sidebar from '@/components/navigation/Sidebar'
+import Sidebar from '@/components/navigation/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { MobileMenu } from '@/components/navigation/MobileMenu';
+import { SkipToContent } from '@/components/layout/SkipToContent';
 
 export const Route = createRootRoute({
   component: () => {
@@ -24,6 +25,7 @@ export const Route = createRootRoute({
     
     return (
       <div className="flex bg-background text-foreground">
+        <SkipToContent />
         <Sidebar 
           className="hidden lg:block" 
           isCollapsed={isCollapsed}
@@ -31,41 +33,21 @@ export const Route = createRootRoute({
           onAnimationComplete={handleAnimationComplete}
         />
         <main className="flex-1 min-h-screen pb-20 lg:pb-0">
-        <Header 
+          <Header 
             isCollapsed={isCollapsed}
             onToggle={handleToggle}
             isAnimating={isAnimating}
           />
-          <AnimatePresence mode="wait" initial={false}>
-            <div key={location.pathname}>
-              <Outlet />
-            </div>
-          </AnimatePresence>
+          <div id="main-content" tabIndex={-1} className="outline-none">
+            <AnimatePresence mode="wait" initial={false}>
+              <div key={location.pathname}>
+                <Outlet />
+              </div>
+            </AnimatePresence>
+          </div>
         </main>
         <MobileMenu />
       </div>
     );
   },
 });
-
-// import { createRootRoute, Outlet } from '@tanstack/react-router';
-// import { ThemeProvider } from '@/components/theme-provider';
-// import { DesktopNav } from '@/components/navigation/desktop-nav';
-// import { MobileNav } from '@/components/navigation/mobile-nav';
-// import { PageTransition } from '@/components/layout/page-transition';
-
-// export const Route = createRootRoute({
-//   component: () => (
-//     <ThemeProvider defaultTheme="dark" storageKey="crypto-theme">
-//       <div className="flex min-h-screen">
-//         <DesktopNav />
-//         <main className="flex-1 overflow-y-auto bg-background pb-[4.5rem] lg:pb-0">
-//           <PageTransition>
-//             <Outlet />
-//           </PageTransition>
-//         </main>
-//         <MobileNav />
-//       </div>
-//     </ThemeProvider>
-//   ),
-// });

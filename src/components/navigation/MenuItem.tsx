@@ -50,19 +50,19 @@ export const MenuItem = ({
     <Link
       to={href}
       className={cn(
-        "flex items-center w-full rounded-(--radius-sm) text-(--muted-foreground) relative",
-        "hover:bg-(--accent) hover:text-accent-foreground",
+        "flex items-center w-full rounded-[var(--radius-sm)] text-[var(--muted-foreground)] relative",
+        "hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]",
         "focus-visible:ring-1 focus-visible:ring-(--ring) focus-visible:ring-offset-0",
         "focus-visible:outline-hidden focus-visible:bg-(--accent) focus-visible:text-(--accent-foreground)",
-        "active:bg-(--accent)/90",
-        "[&[aria-current='page']]:bg-(--accent) [&[aria-current='page']]:text-(--accent-foreground) ",
+        "active:bg-[var(--accent)/90]",
+        "[&[aria-current='page']]:bg-[var(--accent)] [&[aria-current='page']]:text-[var(--accent-foreground)] ",
         "[&[aria-current='page']]:after:absolute",
         "[&[aria-current='page']]:after:bottom-[0.1875rem] ",
         "[&[aria-current='page']]:after:right-0",
         "[&[aria-current='page']]:after:top-[0.1875rem]",
         "[&[aria-current='page']]:after:w-[0.125rem]",
         "[&[aria-current='page']]:after:rounded-full",
-        "[&[aria-current='page']]:after:bg-(--primary-border)",
+        "[&[aria-current='page']]:after:bg-[var(--primary-border)]",
         "[&[aria-current='page']]:after:content-['']",
         isCollapsed ? "justify-center px-3 py-3" : "space-x-4 px-3 py-3"
       )}

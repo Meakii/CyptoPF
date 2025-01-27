@@ -16,9 +16,9 @@ export function ChartTimeFrame({ value, onValueChange }: ChartTimeFrameProps) {
       onValueChange={(value) => onValueChange(value as TimeFrame)}
       className="flex items-center
       px-1 py-1 h-10 gap-x-1
-      border-(--border) 
-      border-1 bg-(--layer-high) 
-      rounded-(--radius-md)"
+      border
+      border-[var(--border)] bg-[var(--layer-high)] 
+      rounded-[var(--radius-md)]"
     >
       {(["1D", "1W", "1M", "6M", "1Y"] as const).map((timeframe) => (
         <div key={timeframe} className="flex items-center">
@@ -37,15 +37,15 @@ export function ChartTimeFrame({ value, onValueChange }: ChartTimeFrameProps) {
           <label
             htmlFor={timeframe}
             className={cn(
-              "btcm-label-sm rounded-sm px-3 cursor-pointer h-8 flex items-center outline-offset-0",
-              "rounded-(--radius-sm)",
-              "text-(--tab-foreground)",
+              "btcm-label-sm px-3 cursor-pointer h-8 flex items-center outline-offset-0",
+              "rounded-[var(--radius-sm)]",
+              "text-var[(--tab-foreground)]",
               "disabled:cursor-not-allowed",
-              "hover:outline-(--border) hover:outline-1 hover:text-(--tab-foreground-hover)",
-              "peer-[&[aria-checked='true']]:outline-(--muted-border)",
+              "hover:outline-[var(--border)] hover:outline-1 hover:text-[var(--tab-foreground-hover)]",
+              "peer-[&[aria-checked='true']]:outline-[var(--muted-border)]",
               "peer-[&[aria-checked='true']]:outline-1",
-              "peer-[&[aria-checked='true']]:bg-(--tab-background-active)",
-              "peer-[&[aria-checked='true']]:text-(--tab-foreground-active)",
+              "peer-[&[aria-checked='true']]:bg-[var(--tab-background-active)]",
+              "peer-[&[aria-checked='true']]:text-[var(--tab-foreground-active)]",
               "peer-focus-visible:ring-1 peer-focus-visible:ring-(--ring) peer-focus-visible:ring-offset-1"
             )}
           >

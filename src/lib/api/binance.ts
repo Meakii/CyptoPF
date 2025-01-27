@@ -54,11 +54,7 @@ export async function fetchPrice(symbol: string): Promise<string> {
   try {
     const data = await fetchBinanceAPI<{ price: string }>(`/ticker/price?symbol=${symbol}`);
     const audRate = await fetchAUDRate();
-    const priceInAUD = parseFloat(data.price) * audRate;
-    return new Intl.NumberFormat('en-AU', {
-      style: 'currency',
-      currency: 'AUD',
-    }).format(priceInAUD);
+    return (parseFloat(data.price) * audRate).toString();
   } catch (error) {
     console.error('Failed to fetch price:', error);
     return '-';
@@ -88,6 +84,9 @@ export async function fetchAUDRate(): Promise<number> {
 
   try {
     const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=AUD');
+    if (!response.ok) {
+      throw new Error('Failed to fetch AUD rate');
+    }
     const data = await response.json();
     cachedAUDRate = data.rates.AUD;
     lastFetchTime = now;

@@ -296,6 +296,10 @@
 
   --loading: var(--primitive-zinc-300);
   --loading-foreground: var(--primitive-zinc-100);
+
+  --border-thin: 1px;
+  --border-normal: 2px;
+  --border-thick: 4px;
   }
   .dark {
      --loading: var(--primitive-zinc-700);

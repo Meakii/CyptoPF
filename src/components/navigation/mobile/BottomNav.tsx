@@ -14,7 +14,7 @@ interface BottomNavProps {
 
 export function BottomNav({ onOpenMenu }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-(--layer-low) border-t lg:hidden border-(--muted-border) z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[var(--layer-low)] border-t lg:hidden border-[var(--muted-border)] z-50">
       <div className="flex items-center justify-between px-4">
         {mainMenuItems.map((item) => (
           <Link
