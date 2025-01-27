@@ -22,12 +22,12 @@ export function ValueDisplay({
         {isHidden ? '••••••' : value}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-(--muted-foreground)">
+        <span className="text-sm text-[var(--muted-foreground)]">
           {timeframe} change
         </span>
         <div className={cn(
           "flex items-center gap-1",
-          performancePercentage >= 0 ? "text-(--uptrend-foreground)" : "text-(--downtrend-foreground)"
+          performancePercentage >= 0 ? "text-[var(--uptrend-foreground)]" : "text-[var(--downtrend-foreground)]"
         )}>
           <span>{performanceAmount}</span>
           <span>({performancePercentage >= 0 ? '+' : '-'}{performancePercentage.toFixed(2)}%)</span>

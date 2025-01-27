@@ -29,7 +29,7 @@ export function PortfolioHeader({
       <div className="flex flex-col gap-1">
         {/* Title and Icon Button */}
         <div className="flex items-center gap-1">
-          <CardTitle className="text-(--muted-foreground)">
+          <CardTitle className="text-[var(--muted-foreground)]">
             Portfolio value
           </CardTitle>
           <IconButton
@@ -43,19 +43,19 @@ export function PortfolioHeader({
         </div>
 
         {/* Value Display */}
-          <div className="btcm-heading-xl text-(--foreground)">
+          <div className="btcm-heading-xl text-[var(--foreground)]">
             {isValueHidden ? "••••••" : value}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-(--muted-foreground)">
+            <span className="text-sm text-[var(--muted-foreground)]">
               {timeframe} change
             </span>
             <div
               className={cn(
                 "flex items-center gap-1",
                 performancePercentage >= 0
-                  ? "text-(--uptrend-foreground)"
-                  : "text-(--downtrend-foreground)"
+                  ? "text-[var(--uptrend-foreground)]"
+                  : "text-[var(--downtrend-foreground)]"
               )}
             >
               <span>{performanceAmount}</span>
