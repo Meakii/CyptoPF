@@ -92,3 +92,13 @@ export function stripCurrencySymbols(value: string): string {
   // Remove all non-numeric characters except decimal points and minus signs
   return value.replace(/[^\d.-]/g, '').trim();
 }
+
+export function formatShortCurrency(value: number): string {
+  const formatter = new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+    notation: 'compact',
+    maximumFractionDigits: 1
+  });
+  return formatter.format(value);
+}

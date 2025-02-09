@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, HelpCircle, Ticket, Network, MessageSquare } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { UserMenu } from './UserMenu';
 import { HelpMenu } from './HelpMenu';
 import { cn } from "@/lib/utils";
 import { HideFiguresToggle, HiddenFigure } from '@/components/ui/hide-figures';
-import { useAssetPrices } from '@/hooks/useAssetPrices';
 import { parseAndFormatCurrency } from '@/lib/currency-utils';
+import { CASH_AVAILABLE } from '@/pages/dashboard';
 
 interface HeaderProps {
   isCollapsed: boolean;
@@ -14,13 +14,6 @@ interface HeaderProps {
 }
 
 export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
-  const { prices } = useAssetPrices();
-  
-  // Calculate total portfolio value
-  const totalValue = prices.reduce((sum, price) => {
-    return sum + parseFloat(price.price);
-  }, 0);
-
   return (
     <header className={cn(
       "sticky top-0 z-10 h-16 border-b border-(--muted-border)",
@@ -46,15 +39,15 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
           )}
         </motion.button>
 
-        <div className="flex items-center gap-2">
-          <HiddenFigure 
-            value={parseAndFormatCurrency(totalValue)} 
-            className="btcm-heading-xl text-(--foreground)"
-          />
-          <HideFiguresToggle />
-        </div>
-
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col items-end">
+            <span className="text-xs text-[var(--muted-foreground)]">Cash available</span>
+            <HiddenFigure 
+              value={parseAndFormatCurrency(CASH_AVAILABLE)} 
+              className="text-sm font-medium"
+            />
+          </div>
+          {/* <HideFiguresToggle /> */}
           <HelpMenu />
           <UserMenu />
         </div>

@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { ArrowUpRight, ArrowDownRight, Wallet } from "lucide-react";
+import { Wallet, LineChart, DollarSign, Coins } from "lucide-react";
+import {
+  BriefcaseDollarIcon, MoneySecurityIcon, PieChartIcon
+} from "hugeicons-react";
 import { TimeFrame } from "@/components/crypto/chart-timeframe";
 import { PortfolioChart } from "@/components/dashboard/portfolio-chart";
 import { HoldingsTable, Holding } from "@/components/dashboard/holdings-table";
@@ -8,6 +11,7 @@ import { useAssetPrices } from "@/hooks/useAssetPrices";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { parseAndFormatCurrency, stripCurrencySymbols } from "@/lib/currency-utils";
 import { StatsCard } from "@/components/dashboard/StatsCard";
+import { HiddenFigure } from '@/components/ui/hide-figures';
 
 const PORTFOLIO_HOLDINGS = [
   { symbol: "BTCUSDT", initialValue: 15000 },
@@ -16,6 +20,9 @@ const PORTFOLIO_HOLDINGS = [
   { symbol: "SOLUSDT", initialValue: 4960 },
   { symbol: "LINKUSDT", initialValue: 4350 },
 ];
+
+// Cash available constant - used in both header and dashboard
+export const CASH_AVAILABLE = 2500;
 
 export function Dashboard() {
   const [timeframe, setTimeframe] = useState<TimeFrame>("1D");
@@ -39,8 +46,8 @@ export function Dashboard() {
     };
   }).filter((holding): holding is Holding => holding !== null);
 
-  // Calculate total portfolio value from the properly calculated holding values
-  const totalValue = holdings.reduce((sum, holding) => {
+  // Calculate total portfolio value from the holdings
+  const totalCryptoValue = holdings.reduce((sum, holding) => {
     return sum + parseFloat(stripCurrencySymbols(holding.value));
   }, 0);
 
@@ -54,34 +61,30 @@ export function Dashboard() {
         <WelcomeBanner />
 
         <div className="mx-10 space-y-8">
-          {/* Grid layout for Stats Cards and PortfolioChart */}
-          <div className="grid grid-cols-12 gap-4">
-            {/* Stats Cards Column */}
-            <div className="col-span-3 space-y-4 grid grid-flow-col grid-rows-3">
+          <div className="grid grid-cols-12 gap-4 h-[420px]">
+            <div className="col-span-3 grid grid-rows-3 gap-4">
               <StatsCard 
-                icon={ArrowUpRight}
-                label="24h Profit/Loss"
-                value={parseAndFormatCurrency(1234.56)}
-                info="Your total profit or loss over the last 24 hours across all assets"
+                icon={BriefcaseDollarIcon}
+                label="Portfolio value"
+                value={parseAndFormatCurrency(totalCryptoValue + CASH_AVAILABLE)}
+                info="Your total portfolio value across all assets"
               />
               <StatsCard 
-                icon={ArrowDownRight}
-                label="Total Invested"
-                value={parseAndFormatCurrency(50000)}
-                info="The total amount you've invested in cryptocurrency"
+                icon={MoneySecurityIcon}
+                label="Cash available"
+                value={parseAndFormatCurrency(CASH_AVAILABLE)}
+                info="Your current available cash balance for trading"
               />
               <StatsCard 
-                icon={Wallet}
-                label="Available Balance"
-                value={parseAndFormatCurrency(2500)}
-                info="Your current available balance for trading or withdrawals"
+                icon={PieChartIcon}
+                label="Crypto holdings value"
+                value={parseAndFormatCurrency(totalCryptoValue)}
+                info="Total value of your cryptocurrency holdings"
               />
             </div>
 
-            {/* Chart Column */}
             <div className="col-span-9">
               <PortfolioChart
-                portfolioValue={parseAndFormatCurrency(totalValue)}
                 timeframe={timeframe}
                 onTimeframeChange={setTimeframe}
                 performanceAmount={performanceAmount}

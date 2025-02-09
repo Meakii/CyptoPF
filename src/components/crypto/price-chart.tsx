@@ -4,11 +4,13 @@ import {
   ColorType,
   ISeriesApi,
   CrosshairMode,
+  PriceFormat,
 } from "lightweight-charts";
 import { TimeFrame, ChartTimeFrame } from "./chart-timeframe";
 import { ChartTooltip } from "./chart/tooltip";
 import { useChartData } from "@/hooks/useChartData";
 import { cn } from "@/lib/utils";
+import { formatShortCurrency } from "@/lib/currency-utils";
 
 interface PriceChartProps {
   symbol: string;
@@ -32,9 +34,9 @@ export function PriceChart({
   timeframe,
   onTimeframeChange,
   showTimeframeSelector = true,
-  height = "h-[240px]",
+  height = "h-full",
   className,
-  showAxes,
+  showAxes = false,
 }: PriceChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<ReturnType<typeof createChart>>();
@@ -57,12 +59,16 @@ export function PriceChart({
         horzLines: { visible: false },
       },
       rightPriceScale: { 
-        visible: showAxes ?? false,
+        visible: showAxes,
         borderVisible: false,
+        format: {
+          type: 'custom',
+          formatter: (price: number) => formatShortCurrency(price),
+        } as PriceFormat,
       },
       leftPriceScale: { visible: false },
       timeScale: {
-        visible: showAxes ?? false,
+        visible: showAxes,
         borderVisible: false,
         fixLeftEdge: true,
         fixRightEdge: true,
@@ -85,10 +91,9 @@ export function PriceChart({
       bottomColor: "rgba(41, 98, 255, 0.05)",
       lineWidth: 2,
       priceFormat: {
-        type: "price",
-        precision: 2,
-        minMove: 0.01,
-      },
+        type: 'custom',
+        formatter: (price: number) => formatShortCurrency(price),
+      } as PriceFormat,
       lastValueVisible: false,
       priceLineVisible: false,
     });
@@ -150,21 +155,14 @@ export function PriceChart({
   }, [data]);
 
   return (
-    <div className="space-y-4 z-0">
+    <div className="space-y-4 h-full flex flex-col">
       {showTimeframeSelector && (
         <div className="flex justify-start">
           <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
         </div>
       )}
-      <div
-        className={cn(
-          "relative w-full rounded-lg z-0",
-          height,
-          className,
-          isLoading && "animate-pulse bg-muted"
-        )}
-      >
-        <div ref={chartContainerRef} className="h-full w-full z-0" />
+      <div className={cn("relative flex-1 w-full rounded-lg", className)}>
+        <div ref={chartContainerRef} className="h-full w-full" />
         {tooltip && (
           <ChartTooltip
             time={tooltip.time}
@@ -181,6 +179,9 @@ export function PriceChart({
           <div className="absolute inset-0 flex items-center justify-center text-sm text-destructive">
             Failed to load chart data
           </div>
+        )}
+        {isLoading && (
+          <div className="absolute inset-0 animate-pulse bg-muted" />
         )}
       </div>
     </div>

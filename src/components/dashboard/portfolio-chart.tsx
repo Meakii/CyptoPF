@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { TimeFrame } from "@/lib/types/timeframe";
 import { PriceChart } from '@/components/crypto/price-chart';
 import { PortfolioHeader } from './portfolio/header';
+import { LineChart } from 'lucide-react';
 
 interface PortfolioChartProps {
-  portfolioValue: string;
   timeframe: TimeFrame;
   onTimeframeChange: (timeframe: TimeFrame) => void;
   performanceAmount: string;
@@ -13,33 +12,35 @@ interface PortfolioChartProps {
 }
 
 export function PortfolioChart({
-  portfolioValue,
   timeframe,
   onTimeframeChange,
   performanceAmount,
   performancePercentage
 }: PortfolioChartProps) {
   return (
-    <Card className="h-[420px]">
-      <CardHeader className="space-y-0">
+    
+    <Card className="h-full flex flex-col">
+      <CardHeader className="flex-none space-y-0">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <LineChart className="h-5 w-5" />
+          <span className="font-medium">Portfolio</span>
+        </div>
         <PortfolioHeader
           timeframe={timeframe}
           onTimeframeChange={onTimeframeChange}
-          value={portfolioValue}
           performanceAmount={performanceAmount}
           performancePercentage={performancePercentage}
         />
       </CardHeader>
-      <CardContent>
-        <div className="h-full">
-          <PriceChart
-            symbol="BTCUSDT" // This will be replaced with portfolio data
-            timeframe={timeframe}
-            showTimeframeSelector={false}
-            onTimeframeChange={onTimeframeChange}
-            showAxes={true}
-          />
-        </div>
+      <CardContent className="flex-1 min-h-0">
+        <PriceChart
+          symbol="BTCUSDT"
+          timeframe={timeframe}
+          showTimeframeSelector={false}
+          onTimeframeChange={onTimeframeChange}
+          showAxes={true}
+          className="h-full"
+        />
       </CardContent>
     </Card>
   );

@@ -1,48 +1,24 @@
-import { useState, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Star } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { skeleton } from '@/utils/skeleton';
-import { SUPPORTED_CRYPTOCURRENCIES } from '@/lib/constants';
 import { useAssetPrices } from '@/hooks/useAssetPrices';
 import { parseAndFormatCurrency } from '@/lib/currency-utils';
+import { useWatchlist } from '@/lib/context/watchlist';
+import { CryptoCurrency } from '@/lib/constants';
 
 interface CryptoTableProps {
-  searchQuery: string;
+  cryptos: CryptoCurrency[];
+  onSortChange: () => void;
+  sortDirection: 'none' | 'asc' | 'desc';
+  sortIcon: React.ReactNode;
 }
 
-export function CryptoTable({ searchQuery }: CryptoTableProps) {
+export function CryptoTable({ cryptos, onSortChange, sortDirection, sortIcon }: CryptoTableProps) {
   const { prices, isLoading } = useAssetPrices();
-  const [favorites, setFavorites] = useState<Set<string>>(() => {
-    const saved = localStorage.getItem('watchlist');
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  });
-
-  // Filter cryptocurrencies based on search query
-  const filteredCryptos = SUPPORTED_CRYPTOCURRENCIES.filter(crypto => {
-    const search = searchQuery.toLowerCase();
-    return crypto.name.toLowerCase().includes(search) || 
-           crypto.symbol.toLowerCase().includes(search);
-  });
-
-  // Save favorites to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('watchlist', JSON.stringify(Array.from(favorites)));
-  }, [favorites]);
-
-  const toggleFavorite = (symbol: string) => {
-    setFavorites(prev => {
-      const newFavorites = new Set(prev);
-      if (newFavorites.has(symbol)) {
-        newFavorites.delete(symbol);
-      } else {
-        newFavorites.add(symbol);
-      }
-      return newFavorites;
-    });
-  };
+  const { isInWatchlist, toggleWatchlist } = useWatchlist();
 
   // Create skeleton rows while loading
   const skeletonRows = Array.from({ length: 10 }).map((_, index) => (
@@ -75,28 +51,49 @@ export function CryptoTable({ searchQuery }: CryptoTableProps) {
   ));
 
   return (
-    <div className="rounded-[var(--radius-sm)] border-[var(--border)] border-1 bg-[var(--card)]">
+    <div className="rounded-[var(--radius-sm)] border-[var(--border)] border bg-[var(--card)]">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Asset</TableHead>
             <TableHead className="text-right">Price</TableHead>
-            <TableHead className="text-right">24h Change</TableHead>
+            <TableHead className="text-right">
+              <div className="flex items-center justify-end gap-2">
+                24h Change
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onSortChange}
+                  className="-mr-2"
+                  aria-label={`Sort by 24h change ${
+                    sortDirection === 'none' 
+                      ? '' 
+                      : sortDirection === 'asc' 
+                        ? 'ascending' 
+                        : 'descending'
+                  }`}
+                  aria-pressed={sortDirection !== 'none'}
+                >
+                  {sortIcon}
+                </Button>
+              </div>
+            </TableHead>
             <TableHead className="text-right">Actions</TableHead>
             <TableHead className="text-center">Watchlist</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading ? skeletonRows : filteredCryptos.map((crypto) => {
+          {isLoading ? skeletonRows : cryptos.map((crypto) => {
             const price = prices.find(p => p.symbol === crypto.symbol);
+            if (!price) return null;
             const Icon = crypto.icon;
 
             return (
               <TableRow key={crypto.id}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <div className="shrink-0 w-8 h-8">
-                      <Icon width={32} height={32} />
+                    <div className="shrink-0 w-6 h-6">
+                      <Icon width={24} height={24} />
                     </div>
                     <div className="flex flex-col">
                       <span>{crypto.name}</span>
@@ -107,19 +104,17 @@ export function CryptoTable({ searchQuery }: CryptoTableProps) {
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {price?.price ? parseAndFormatCurrency(price.price) : '-'}
+                  {parseAndFormatCurrency(price.price)}
                 </TableCell>
                 <TableCell className="text-right">
-                  {price && (
-                    <div
-                      className={cn(
-                        "flex items-center justify-end",
-                        price.change >= 0 ? "text-[var(--uptrend-foreground)]" : "text-[var(--downtrend-foreground)]"
-                      )}
-                    >
-                      {price.change >= 0 ? '+' : ''}{price.change.toFixed(2)}%
-                    </div>
-                  )}
+                  <div
+                    className={cn(
+                      "flex items-center justify-end",
+                      price.change >= 0 ? "text-[var(--uptrend-foreground)]" : "text-[var(--downtrend-foreground)]"
+                    )}
+                  >
+                    {price.change >= 0 ? '+' : ''}{price.change.toFixed(2)}%
+                  </div>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
@@ -145,12 +140,13 @@ export function CryptoTable({ searchQuery }: CryptoTableProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => toggleFavorite(crypto.symbol)}
+                    onClick={() => toggleWatchlist(crypto.symbol)}
+                    aria-label={isInWatchlist(crypto.symbol) ? "Remove from watchlist" : "Add to watchlist"}
                   >
                     <Star
                       className={cn(
                         "h-4 w-4",
-                        favorites.has(crypto.symbol) 
+                        isInWatchlist(crypto.symbol) 
                           ? "fill-yellow-400 text-yellow-400" 
                           : "text-[var(--muted-foreground)]"
                       )}
@@ -160,6 +156,13 @@ export function CryptoTable({ searchQuery }: CryptoTableProps) {
               </TableRow>
             );
           })}
+          {!isLoading && cryptos.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                No assets found
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

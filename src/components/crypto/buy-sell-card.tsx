@@ -16,19 +16,15 @@ interface BuySellCardProps {
   symbol: string;
   timeframe: TimeFrame;
   onTimeframeChange: (timeframe: TimeFrame) => void;
-  currency?: string;
 }
 
 export function BuySellCard({
   symbol,
   timeframe,
   onTimeframeChange,
-  // currency = ''
 }: BuySellCardProps) {
   const [tab, setTab] = useState("buy");
-  const { price, priceChange, isLoading, error } = useCryptoPrice(symbol, {
-    // currency: currency
-  });
+  const { price, priceChange, isLoading, error } = useCryptoPrice(symbol);
 
   return (
     <div className="rounded-[var(--radius-sm)] border-[var(--border)] border bg-card">
@@ -82,12 +78,12 @@ export function BuySellCard({
                 )}
               </div>
 
-              <div className="mt-4">
+              <div className="h-[300px]">
                 <PriceChart
                   symbol={symbol}
                   timeframe={timeframe}
-                  height="h-[300px] md:h-[400px] lg:h-[128px]"
                   onTimeframeChange={onTimeframeChange}
+                  showAxes={false}
                 />
               </div>
             </div>

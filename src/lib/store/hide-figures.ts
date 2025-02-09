@@ -15,7 +15,7 @@ export const useHideFigures = create<HideFiguresState>((set) => ({
     // Show toast only when transitioning to hidden state
     if (newState.isHidden) {
       toast.message("Figures hidden", {
-        description: "Use Shift + H keys at any time to hide and show sensitive figures",
+        description: "Use Ctrl/Cmd + H keys at any time to hide and show sensitive figures",
         action: {
           label: "Got it",
           onClick: () => toast.dismiss(),
@@ -33,7 +33,9 @@ export function useHideFiguresShortcut() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.shiftKey && e.key.toLowerCase() === 'h') {
+      // Check for either Control or Command key (metaKey for Mac)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'h') {
+        e.preventDefault(); // Prevent browser's default behavior
         toggle();
       }
     };
