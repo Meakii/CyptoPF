@@ -21,7 +21,7 @@ export function TimeFrameSelector({
       items-center 
       px-1 py-1 h-10 gap-x-1
       border-(--border) 
-      border-1 bg-(--layer-high) 
+      border-1 bg-[var(--layer-high)] 
       rounded-(--radius-md)"
       >
       {(["1D", "1W", "1M", "6M", "1Y"] as const).map((timeframe) => (

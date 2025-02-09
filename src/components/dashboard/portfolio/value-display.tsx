@@ -22,7 +22,7 @@ export function ValueDisplay({
         {isHidden ? '••••••' : value}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-[var(--muted-foreground)]">
+        <span className="text-sm text-(--muted-foreground)">
           {timeframe} change
         </span>
         <div className={cn(

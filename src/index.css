@@ -8,6 +8,16 @@
 @layer base {
   :root {
    --figtree: "Figtree", Helvetica, Arial, sans-serif;
+   --color-blue-50: #e7ebfb;
+  --color-blue-100: #ccd5f8;
+  --color-blue-200: #acbdf4;
+  --color-blue-300: #86a1f1;
+  --color-blue-400: #4f7fed;
+  --color-blue-500: #1365e0;
+  --color-blue-600: #115ac9;
+  --color-blue-700: #0f4eae;
+  --color-blue-800: #0c408e;
+  --color-blue-900: #092d64;
   --primitive-sand-50: #fcfbf8;
   --primitive-sand-100: #fffbf0;
   --primitive-sand-200: #fcf6e5;
@@ -246,10 +256,10 @@
   --popover: var(--layer-low);
   --popover-foreground: var(--primitive-zinc-900);
   --foreground: var(--primitive-zinc-900);
-  --primary: var(--primitive-primary-400);
-  --primary-foreground: var(--primitive-primary-900);
-  --primary-hover: var(--primitive-primary-300);
-  --primary-border: var(--primitive-primary-500);
+  --primary: var(--color-blue-500);
+  --primary-foreground: var(--primitive-ash-50);
+  --primary-hover: var(--color-blue-600);
+  --primary-border: var(--color-blue-500);
   --ring: var(--primitive-zinc-600);
   --destructive: var(--primitive-red-500);
   --destructive-hover: var(--primitive-red-400);
@@ -296,10 +306,6 @@
 
   --loading: var(--primitive-zinc-300);
   --loading-foreground: var(--primitive-zinc-100);
-
-  --border-thin: 1px;
-  --border-normal: 2px;
-  --border-thick: 4px;
   }
   .dark {
      --loading: var(--primitive-zinc-700);
@@ -345,10 +351,10 @@
     --border: var(--primitive-zinc-700);
     --popover: var(--layer-low);
     --popover-foreground: var(--primitive-zinc-200);
-    --primary: var(--primitive-primary-200);
-    --primary-hover: var(--primitive-primary-100);
-    --primary-border: var(--primitive-primary-200);
-    --primary-foreground: var(--primitive-primary-900);
+    --primary: var(--color-blue-300);
+    --primary-hover: var(--color-blue-200);
+    --primary-border: var(--color-blue-300);
+    --primary-foreground: var(--primitive-smoke-800);
     --ring: var(--primitive-zinc-300);
     --destructive: var(--primitive-red-500);
     --destructive-hover: var(--primitive-red-400);

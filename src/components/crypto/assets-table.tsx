@@ -103,7 +103,7 @@ export function AssetsTable({
                   return (
                     <TableRow
                       key={crypto.id}
-                      className="hover:bg-(--layer-high) transition-colors"
+                      className="hover:bg-[var(--layer-high)] transition-colors"
                     >
                       <TableCell>
                         <Link

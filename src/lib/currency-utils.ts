@@ -8,7 +8,7 @@ interface CurrencyConfig {
 // Can be expanded to include more currencies as needed
 export const CURRENCY_CONFIGS: Record<string, CurrencyConfig> = {
   USD: { symbol: '$', position: 'prefix' },
-  AUD: { symbol: 'A$', position: 'prefix' },
+  AUD: { symbol: '$', position: 'prefix' },
   EUR: { symbol: '€', position: 'suffix' },
   GBP: { symbol: '£', position: 'prefix' },
   JPY: { symbol: '¥', position: 'prefix' },

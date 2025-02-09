@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MenuSection } from './MenuSection';
+import { MenuItem } from './MenuItem';
 import { menuSections } from '@/config/menuItems';
 
 interface SidebarExpandedProps {
@@ -57,13 +57,16 @@ export const SidebarExpanded = ({ onCollapse }: SidebarExpandedProps) => {
       animate="animate"
       exit="exit"
     >
-      {menuSections.map((section, index) => (
-        <MenuSection
-          key={index}
-          section={section}
-          isCollapsed={false}
-          variants={itemVariants}
-        />
+      {menuSections[0].items.map((item, index) => (
+        <motion.div key={item.href} variants={itemVariants}>
+          <MenuItem
+            icon={item.icon}
+            label={item.label}
+            href={item.href}
+            childRoutes={item.childRoutes}
+            isCollapsed={false}
+          />
+        </motion.div>
       ))}
     </motion.div>
   );

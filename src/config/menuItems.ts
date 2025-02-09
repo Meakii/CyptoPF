@@ -16,13 +16,11 @@ export interface MenuItem {
 }
 
 export interface MenuSectionType {
-  title: string;
   items: MenuItem[];
 }
 
 export const menuSections: MenuSectionType[] = [
   {
-    title: "Explore",
     items: [
       { icon: LayoutDashboard, label: "Dashboard", href: "/" },
       { 
@@ -30,32 +28,16 @@ export const menuSections: MenuSectionType[] = [
         label: "Assets", 
         href: "/assets",
         childRoutes: ['/assets/$cryptoId']
-      }
-    ]
-  },
-  {
-    title: "Buy / sell assets",
-    items: [
+      },
       { 
         icon: Coins, 
-        label: "Crypto", 
+        label: "Buy / Sell", 
         href: "/crypto",
         childRoutes: ['/buy-sell/bitcoin', '/buy-sell/$cryptoId'] 
-      }
-    ]
-  },
-  
-  {
-    title: "Deposit",
-    items: [
-      { icon: DollarSign, label: "AUD", href: "/deposit-aud" }
-    ]
-  },
-  {
-    title: "Advanced platform",
-    items: [
+      },
+      { icon: DollarSign, label: "Deposit AUD", href: "/deposit-aud" },
       { icon: ArrowUpDown, label: "Withdraw", href: "/withdraw" },
-      { icon: Upload, label: "Deposit crypto", href: "/deposit-crypto" },
+      { icon: Upload, label: "Deposit Crypto", href: "/deposit-crypto" },
       { icon: Clock, label: "Transactions", href: "/transactions" }
     ]
   }

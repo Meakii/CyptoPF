@@ -21,7 +21,7 @@ const Sidebar = ({ className, isCollapsed, onToggle, onAnimationComplete }: Side
   return (
     <motion.div 
       className={cn(
-        "sidebar min-h-screen bg-background border-r border-[var(--muted-border)]",
+        "sidebar min-h-screen bg-background border-r border-[var(--border)]",
         isCollapsed ? "w-16" : "w-64",
         className
       )}

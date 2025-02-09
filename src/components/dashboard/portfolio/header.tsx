@@ -1,12 +1,9 @@
 import { CardTitle } from "@/components/ui/card";
-import { IconButton } from "@/components/ui/icon-button";
-import { ViewIcon, ViewOffSlashIcon } from "hugeicons-react";
 import { TimeFrame, ChartTimeFrame } from "@/components/crypto/chart-timeframe";
 import { cn } from "@/lib/utils";
+import { HiddenFigure } from '@/components/ui/hide-figures';
 
 interface PortfolioHeaderProps {
-  isValueHidden: boolean;
-  onToggleHide: () => void;
   timeframe: TimeFrame;
   onTimeframeChange: (timeframe: TimeFrame) => void;
   value: string;
@@ -15,8 +12,6 @@ interface PortfolioHeaderProps {
 }
 
 export function PortfolioHeader({
-  isValueHidden,
-  onToggleHide,
   timeframe,
   onTimeframeChange,
   value,
@@ -27,85 +22,36 @@ export function PortfolioHeader({
     <div className="flex justify-between items-start">
       {/* Left Column */}
       <div className="flex flex-col gap-1">
-        {/* Title and Icon Button */}
-        <div className="flex items-center gap-1">
-          <CardTitle className="text-[var(--muted-foreground)]">
-            Portfolio value
-          </CardTitle>
-          <IconButton
-            icon={isValueHidden ? ViewIcon : ViewOffSlashIcon}
-            onClick={onToggleHide}
-            className="h-6 w-6"
-            aria-label={
-              isValueHidden ? "Show portfolio value" : "Hide portfolio value"
-            }
-          />
-        </div>
+        {/* Title */}
+        <CardTitle className="text-(--muted-foreground)">
+          Portfolio value
+        </CardTitle>
 
         {/* Value Display */}
-          <div className="btcm-heading-xl text-[var(--foreground)]">
-            {isValueHidden ? "••••••" : value}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-[var(--muted-foreground)]">
-              {timeframe} change
+        <div className="btcm-heading-xl text-(--foreground)">
+          <HiddenFigure value={value} />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-(--muted-foreground)">
+            {timeframe} change
+          </span>
+          <div
+            className={cn(
+              "flex items-center gap-1",
+              performancePercentage >= 0
+                ? "text-[var(--uptrend-foreground)]"
+                : "text-[var(--downtrend-foreground)]"
+            )}
+          >
+            <span>{performanceAmount}</span>
+            <span>
+              ({performancePercentage >= 0 ? "+" : ""}
+              {performancePercentage.toFixed(2)}%)
             </span>
-            <div
-              className={cn(
-                "flex items-center gap-1",
-                performancePercentage >= 0
-                  ? "text-[var(--uptrend-foreground)]"
-                  : "text-[var(--downtrend-foreground)]"
-              )}
-            >
-              <span>{performanceAmount}</span>
-              <span>
-                ({performancePercentage >= 0 ? "+" : ""}
-                {performancePercentage.toFixed(2)}%)
-              </span>
-            </div>
           </div>
         </div>
+      </div>
       <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
     </div>
   );
 }
-
-
-// import { CardTitle } from "@/components/ui/card";
-// import { IconButton } from "@/components/ui/icon-button";
-// import { ViewIcon, ViewOffSlashIcon } from "hugeicons-react";
-// import { TimeFrame, ChartTimeFrame } from "@/components/crypto/chart-timeframe";
-
-// interface PortfolioHeaderProps {
-//   isValueHidden: boolean;
-//   onToggleHide: () => void;
-//   timeframe: TimeFrame;
-//   onTimeframeChange: (timeframe: TimeFrame) => void;
-// }
-
-// export function PortfolioHeader({
-//   isValueHidden,
-//   onToggleHide,
-//   timeframe,
-//   onTimeframeChange,
-// }: PortfolioHeaderProps) {
-//   return (
-//     <div className="flex justify-between">
-//         <div className="flex gap-x-1 items-center">
-//           <CardTitle className="text-(--muted-foreground) gap-x-2">
-//             Portfolio value
-//           </CardTitle>
-//           <IconButton
-//             icon={isValueHidden ? ViewIcon : ViewOffSlashIcon}
-//             onClick={onToggleHide}
-//             className="h-6 w-6"
-//             aria-label={
-//               isValueHidden ? "Show portfolio value" : "Hide portfolio value"
-//             }
-//           />
-//         </div>
-//       <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
-//     </div>
-//   );
-// }

@@ -13,9 +13,9 @@ export function MenuDrawer({ open, onOpenChange }: MenuDrawerProps) {
     <VaulDrawer.Root open={open} onOpenChange={onOpenChange}>
       <VaulDrawer.Portal>
         <VaulDrawer.Overlay className="fixed inset-0 bg-black/40" />
-        <VaulDrawer.Content className="bg-[(--layer-low)] flex flex-col rounded-t-[10px] h-[80%] mt-24 fixed bottom-0 left-0 right-0">
-          <div className="p-4 bg-[var(--layer-low)]  rounded-t-[10px] flex-1">
-            <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-[var(--layer-low)] mb-8" />
+        <VaulDrawer.Content className="bg-[var(--background)] flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0">
+          <div className="p-4 bg-[var(--background)]  rounded-t-[10px] flex-1">
+            <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-muted mb-8" />
             <div className="max-w-md mx-auto">
               <VaulDrawer.Title className="font-medium mb-4">Advanced Platform</VaulDrawer.Title>
               <nav className="space-y-4">
