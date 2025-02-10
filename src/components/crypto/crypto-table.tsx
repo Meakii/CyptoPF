@@ -25,7 +25,7 @@ export function CryptoTable({ cryptos, onSortChange, sortDirection, sortIcon }: 
     <TableRow key={`skeleton-${index}`}>
       <TableCell>
         <div className="flex items-center gap-2">
-          <div className="shrink-0 w-6 h-6" {...skeleton({ loading: true, className: "rounded-full" })} />
+          <div className="shrink-0 w-7 h-7" {...skeleton({ loading: true, className: "rounded-full" })} />
           <div className="flex flex-col gap-1">
             <div {...skeleton({ loading: true, className: "h-4 w-24" })} />
             <div {...skeleton({ loading: true, className: "h-3 w-16" })} />
@@ -92,8 +92,8 @@ export function CryptoTable({ cryptos, onSortChange, sortDirection, sortIcon }: 
               <TableRow key={crypto.id}>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <div className="shrink-0 w-6 h-6">
-                      <Icon width={24} height={24} />
+                    <div className="shrink-0 w-7 h-7">
+                      <Icon width={28} height={28} />
                     </div>
                     <div className="flex flex-col">
                       <span>{crypto.name}</span>

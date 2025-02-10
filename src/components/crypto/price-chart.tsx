@@ -11,7 +11,6 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  // TooltipProps,
 } from "recharts";
 
 interface PriceChartProps {
@@ -88,7 +87,6 @@ export function PriceChart({
   const { data, isLoading, error } = useChartData(symbol, timeframe);
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
 
-  // Calculate domain with padding
   const yDomain = useMemo(() => {
     if (!data?.length) return [0, 0];
 
@@ -97,31 +95,28 @@ export function PriceChart({
     const maxValue = Math.max(...values);
     const range = maxValue - minValue;
     
-    // Add 10% padding to top and bottom
     const paddingFactor = 0.05;
     const topPadding = range * paddingFactor;
     const bottomPadding = range * paddingFactor;
 
     return [
-      Math.max(0, minValue - bottomPadding), // Don't go below 0
+      Math.max(0, minValue - bottomPadding),
       maxValue + topPadding,
     ];
   }, [data]);
 
-  // Calculate y-axis ticks with padding at top and bottom
   const yAxisTicks = useMemo(() => {
     if (!data?.length) return [];
 
     const [min, max] = yDomain;
     const range = max - min;
 
-    const tickPaddingFactor = 0.1; // 10% padding on each end
+    const tickPaddingFactor = 0.1;
     const tickMin = min + (range * tickPaddingFactor);
     const tickMax = max - (range * tickPaddingFactor);
     const tickRange = tickMax - tickMin;
 
-    // Generate 3 ticks within the padded range
-    return Array.from({ length: 4 }, (_, i) => tickMin + (tickRange * (i / 3)));
+    return Array.from({ length: 5 }, (_, i) => tickMin + (tickRange * (i / 4)));
   }, [data, yDomain]);
 
   useEffect(() => {
@@ -157,7 +152,7 @@ export function PriceChart({
             <AreaChart
               className="min-w-full flex flex-col justify-between gap-x-4"
               data={chartData}
-              margin={{ top: 10, right: showAxes ? 0 : 0, left: 0, bottom: 0 }}
+              margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
             >
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
@@ -165,35 +160,33 @@ export function PriceChart({
                   <stop offset="95%" stopColor="#2962FF" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              {showAxes && (
-                <>
-                  <XAxis
-                    dataKey="time"
-                    tickFormatter={(time) => formatTimeLabel(time, timeframe)}
-                    stroke="var(--muted-foreground)"
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={false}
-                    minTickGap={50}
-                    dy={10}
-                  />
-                  <YAxis
-                    orientation="right"
-                    domain={yDomain}
-                    ticks={yAxisTicks}
-                    tickFormatter={formatYAxisTick}
-                    stroke="var(--muted-foreground)"
-                    fontSize={11}
-                    tickLine={true}
-                    axisLine={false}
-                    width={60}
-                    dx={0}
-                    tick
-                    tickMargin={8}
-                    minTickGap={8}
-                  />
-                </>
-              )}
+              <XAxis
+                dataKey="time"
+                tickFormatter={(time) => formatTimeLabel(time, timeframe)}
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                minTickGap={50}
+                dy={10}
+                hide={!showAxes}
+              />
+              <YAxis
+                orientation="right"
+                domain={yDomain}
+                ticks={yAxisTicks}
+                tickFormatter={formatYAxisTick}
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickLine={true}
+                axisLine={false}
+                width={60}
+                dx={0}
+                tick
+                tickMargin={8}
+                minTickGap={8}
+                hide={!showAxes}
+              />
               <Tooltip
                 content={({ active, payload, label }) => (
                   <CustomTooltip

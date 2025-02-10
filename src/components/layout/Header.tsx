@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { UserMenu } from './UserMenu';
 import { HelpMenu } from './HelpMenu';
 import { cn } from "@/lib/utils";
 import { HideFiguresToggle, HiddenFigure } from '@/components/ui/hide-figures';
 import { parseAndFormatCurrency } from '@/lib/currency-utils';
 import { CASH_AVAILABLE } from '@/pages/dashboard';
-
+import {
+  ArrowLeft03Icon,
+  ArrowRight03Icon,
+} from "hugeicons-react";
 interface HeaderProps {
   isCollapsed: boolean;
   onToggle: () => void;
@@ -33,9 +35,9 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
           whileTap={{ scale: 0.95 }}
         >
           {isCollapsed ? (
-            <ChevronRight className="w-5 h-5" />
+            <ArrowRight03Icon className="w-5 h-5" />
           ) : (
-            <ChevronLeft className="w-5 h-5" />
+            <ArrowLeft03Icon className="w-5 h-5" />
           )}
         </motion.button>
 
@@ -47,7 +49,7 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
               className="text-sm font-medium"
             />
           </div>
-          <HideFiguresToggle />
+          {/* <HideFiguresToggle /> */}
           <HelpMenu />
           <UserMenu />
         </div>

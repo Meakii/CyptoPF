@@ -37,11 +37,11 @@ export function ChartTimeFrame({ value, onValueChange }: ChartTimeFrameProps) {
           <label
             htmlFor={timeframe}
             className={cn(
-              "btcm-label-sm px-3 cursor-pointer h-8 flex items-center outline-offset-0",
+              "btcm-label-sm px-3 cursor-pointer h-8 flex items-center outline-1 -outline-offset-1",
               "rounded-[var(--radius-sm)]",
               "text-var[(--tab-foreground)]",
               "disabled:cursor-not-allowed",
-              "hover:outline-[var(--border)] hover:outline-1 hover:text-[var(--tab-foreground-hover)]",
+              "hover:outline-[var(--border)] hover:outline hover:text-[var(--tab-foreground-hover)]",
               "peer-[&[aria-checked='true']]:outline-[var(--muted-border)]",
               "peer-[&[aria-checked='true']]:outline-1",
               "peer-[&[aria-checked='true']]:outline",

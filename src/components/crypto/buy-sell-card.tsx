@@ -1,5 +1,9 @@
 import { useState } from "react";
 import {
+  PlusSignCircleIcon,
+  MinusSignCircleIcon,
+} from "hugeicons-react";
+import {
   AnimatedTabs,
   AnimatedTabsList,
   AnimatedTabsTrigger,
@@ -34,10 +38,10 @@ export function BuySellCard({
           variant="underlined"
           value={tab}
         >
-          <AnimatedTabsTrigger value="buy" variant="underlined">
+          <AnimatedTabsTrigger value="buy" variant="underlined" startIcon={<PlusSignCircleIcon className="h-5 w-5" />}>
             Buy
           </AnimatedTabsTrigger>
-          <AnimatedTabsTrigger value="sell" variant="underlined">
+          <AnimatedTabsTrigger value="sell" variant="underlined" startIcon={<MinusSignCircleIcon className="h-5 w-5" />}>
             Sell
           </AnimatedTabsTrigger>
         </AnimatedTabsList>

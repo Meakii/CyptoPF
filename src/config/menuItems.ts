@@ -1,18 +1,18 @@
-import { 
-  LayoutDashboard, 
-  Coins, 
-  DollarSign, 
-  ArrowUpDown,
-  Upload,
-  Clock,
-  LineChart
-} from 'lucide-react';
+import {
+  ChartLineData01Icon,
+  DiscoverCircleIcon,
+  CoinsSwapIcon,
+  MoneyReceiveCircleIcon,
+  WalletAdd01Icon,
+  CircleArrowUpRightIcon,
+  SquareArrowDataTransferDiagonalIcon
+} from "hugeicons-react";
 
 export interface MenuItem {
   icon: any;
   label: string;
   href: string;
-  childRoutes?: string[]; 
+  childRoutes?: string[];
 }
 
 export interface MenuSectionType {
@@ -22,23 +22,27 @@ export interface MenuSectionType {
 export const menuSections: MenuSectionType[] = [
   {
     items: [
-      { icon: LayoutDashboard, label: "Dashboard", href: "/" },
-      { 
-        icon: LineChart, 
-        label: "Assets", 
+      { icon: ChartLineData01Icon, label: "Dashboard", href: "/" },
+      {
+        icon: DiscoverCircleIcon,
+        label: "Assets",
         href: "/assets",
-        childRoutes: ['/assets/$cryptoId']
+        childRoutes: ["/assets/$cryptoId"],
       },
-      { 
-        icon: Coins, 
-        label: "Buy / Sell", 
+      {
+        icon: CoinsSwapIcon,
+        label: "Buy / Sell",
         href: "/crypto",
-        childRoutes: ['/buy-sell/bitcoin', '/buy-sell/$cryptoId'] 
+        childRoutes: ["/buy-sell/bitcoin", "/buy-sell/$cryptoId"],
       },
-      { icon: DollarSign, label: "Deposit AUD", href: "/deposit-aud" },
-      { icon: ArrowUpDown, label: "Withdraw", href: "/withdraw" },
-      { icon: Upload, label: "Deposit Crypto", href: "/deposit-crypto" },
-      { icon: Clock, label: "Transactions", href: "/transactions" }
-    ]
-  }
+      {
+        icon: MoneyReceiveCircleIcon,
+        label: "Deposit AUD",
+        href: "/deposit-aud",
+      },
+      { icon: CircleArrowUpRightIcon, label: "Withdraw", href: "/withdraw" },
+      { icon: WalletAdd01Icon, label: "Deposit Crypto", href: "/deposit-crypto" },
+      { icon: SquareArrowDataTransferDiagonalIcon, label: "Transactions", href: "/transactions" },
+    ],
+  },
 ];

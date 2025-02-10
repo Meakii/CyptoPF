@@ -18,7 +18,7 @@ export function TableHeader({
           placeholder="Search assets..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-[200px]"
+          className="w-[200px] h-[44px]"
         />
       </div>
     </div>

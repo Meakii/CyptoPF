@@ -229,9 +229,9 @@
   --space-32: 8rem;
   --space-1-5: 0.375rem;
   --system: var(--figtree);
-  --normal: 400;
-  --medium: 500;
-  --semi-bold: 600;
+  --normal: 500;
+  --medium: 600;
+  --semi-bold: 700;
   --leading-none: 1;
   --leading-tight: 1.25;
   --leading-normal: 1.5;
@@ -444,7 +444,7 @@
     /* font-family: 'PlusJakartaSans', 'Arial', sans-serif; */
 
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: var(--medium);
     font-variant-numeric: tabular-nums;
     color-scheme: light dark;
     font-synthesis: none;
@@ -549,7 +549,7 @@
   }
 
   .btcm-label-2xs-semibold {
-    @apply text-pretty text-[0.625rem] font-semibold leading-tight tracking-wider;
+    @apply text-pretty text-[0.625rem] font-semibold leading-tight
   }
 
   /* Body */
@@ -562,7 +562,7 @@
   }
 
   .btcm-body-md {
-    @apply text-[1rem] font-normal leading-normal tracking-wider;
+    @apply text-[1rem] font-[var(--medium)] leading-normal;
   }
 
   /* Buttons */
@@ -598,9 +598,19 @@
   src: url('./fonts/Figtree-Regular.woff2') format('woff2-variations'),
   url('./fonts/Figtree-Regular.woff') format('woff-variations');
 }
+
 @font-face {
   font-family: 'Figtree';
   font-weight: 600;
+  font-display: swap;
+  font-style:normal;
+  font-named-instance: 'Medium';
+  src: url('./fonts/Figtree-Medium.woff2') format('woff2-variations'),
+  url('./fonts/Figtree-Medium.woff') format('woff-variations');
+}
+@font-face {
+  font-family: 'Figtree';
+  font-weight: 700;
   font-display: swap;
   font-style:normal;
   font-named-instance: 'SemiBold';
@@ -609,7 +619,7 @@
 }
 @font-face {
   font-family: 'Figtree';
-  font-weight: 700;
+  font-weight: 800;
   font-display: swap;
   font-style:normal;
   font-named-instance: 'Bold';

@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import {
+  Coins02Icon,
+  StarIcon,
+} from "hugeicons-react";
 import { PageTransition } from "@/components/layout/page-transition";
 import { CryptoTable } from "@/components/crypto/crypto-table";
 import { Input } from "@/components/ui/input";
@@ -60,8 +64,8 @@ export function AssetsPage() {
           <AnimatedTabs value={activeTab} onValueChange={setActiveTab}>
             <div className="border-b border-[var(--border)]">
               <AnimatedTabsList className="w-full justify-start" variant="underlined" value={activeTab}>
-                <AnimatedTabsTrigger value="all" variant="underlined">All</AnimatedTabsTrigger>
-                <AnimatedTabsTrigger value="watchlist" variant="underlined">Watchlist</AnimatedTabsTrigger>
+                <AnimatedTabsTrigger value="all" variant="underlined" startIcon={<Coins02Icon className="h-5 w-5" />}>All</AnimatedTabsTrigger>
+                <AnimatedTabsTrigger value="watchlist" variant="underlined" startIcon={<StarIcon className="h-5 w-5" />}>Watchlist</AnimatedTabsTrigger>
               </AnimatedTabsList>
             </div>
 
@@ -73,7 +77,7 @@ export function AssetsPage() {
                     placeholder="Search assets..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 max-w-sm"
+                    className="pl-9 max-w-sm h-[44px]"
                   />
                 </div>
                 <CryptoTable 

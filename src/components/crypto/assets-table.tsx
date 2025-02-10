@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+  Coins02Icon,
+  StarIcon,
+} from "hugeicons-react";
 import { Link } from "@tanstack/react-router";
 import {
   AnimatedTabs,
@@ -63,10 +67,10 @@ export function AssetsTable({
           variant="underlined"
           value={tab}
         >
-          <AnimatedTabsTrigger value="all" variant="underlined">
+          <AnimatedTabsTrigger value="all" variant="underlined" startIcon={<Coins02Icon className="h-5 w-5" />}>
             All assets
           </AnimatedTabsTrigger>
-          <AnimatedTabsTrigger value="watchlist" variant="underlined">
+          <AnimatedTabsTrigger value="watchlist" variant="underlined" startIcon={<StarIcon className="h-5 w-5" />}>
             Watchlist
           </AnimatedTabsTrigger>
         </AnimatedTabsList>
@@ -79,7 +83,7 @@ export function AssetsTable({
                 placeholder="Search assets..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 w-full"
+                className="pl-9 w-full h-[44px]"
               />
             </div>
           </div>
