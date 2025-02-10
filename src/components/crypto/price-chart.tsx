@@ -1,16 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  createChart,
-  ColorType,
-  ISeriesApi,
-  CrosshairMode,
-  PriceFormat,
-} from "lightweight-charts";
+import { useEffect, useState, useMemo } from "react";
 import { TimeFrame, ChartTimeFrame } from "./chart-timeframe";
-import { ChartTooltip } from "./chart/tooltip";
 import { useChartData } from "@/hooks/useChartData";
 import { cn } from "@/lib/utils";
-import { formatShortCurrency } from "@/lib/currency-utils";
+import { formatTimeLabel, formatTooltipTime } from "@/lib/chart-utils";
+import { formatCompactCurrency } from "@/lib/currency-utils";
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  // TooltipProps,
+} from "recharts";
 
 interface PriceChartProps {
   symbol: string;
@@ -22,168 +24,371 @@ interface PriceChartProps {
   showAxes?: boolean;
 }
 
-interface TooltipData {
+interface ChartDataPoint {
   time: number;
-  price: number;
-  x: number;
-  y: number;
+  value: number;
 }
+
+type CustomTooltipProps = {
+  active?: boolean;
+  payload?: {
+    value: number;
+    payload: ChartDataPoint;
+  }[];
+  label?: string | number;
+  timeframe: TimeFrame;
+};
+
+const formatCurrency = (value: number): string => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: value < 2 ? 4 : 2,
+    maximumFractionDigits: value < 2 ? 4 : 2,
+  });
+  return formatter.format(value);
+};
+
+const formatYAxisTick = (value: number): string => {
+  if (value >= 1000) {
+    return formatCompactCurrency(value);
+  }
+  return formatCurrency(value);
+};
+
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  timeframe,
+}: CustomTooltipProps) => {
+  if (!active || !payload?.length) return null;
+
+  return (
+    <div className="px-3 py-2 bg-[var(--popover)] text-[var(--popover-foreground)] rounded-[var(--radius-sm)] shadow-md border-[var(--border)] border">
+      <div className="text-[var(--foreground)] btcm-label-sm">
+        {formatCurrency(payload[0].value)}
+      </div>
+      <div className="text-[var(--muted-foreground)] btcm-label-sm">
+        {formatTooltipTime(Number(label), timeframe)}
+      </div>
+    </div>
+  );
+};
 
 export function PriceChart({
   symbol,
   timeframe,
   onTimeframeChange,
   showTimeframeSelector = true,
-  height = "h-full",
+  height = "100%",
   className,
   showAxes = false,
 }: PriceChartProps) {
-  const chartContainerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<ReturnType<typeof createChart>>();
-  const seriesRef = useRef<ISeriesApi<"Area">>();
-  const resizeObserverRef = useRef<ResizeObserver>();
-  const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const { data, isLoading, error } = useChartData(symbol, timeframe);
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
 
-  // Initialize chart with dynamic height
+  // Calculate domain with padding
+  const yDomain = useMemo(() => {
+    if (!data?.length) return [0, 0];
+
+    const values = data.map((d) => d.value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = maxValue - minValue;
+    
+    // Add 10% padding to top and bottom
+    const paddingFactor = 0.05;
+    const topPadding = range * paddingFactor;
+    const bottomPadding = range * paddingFactor;
+
+    return [
+      Math.max(0, minValue - bottomPadding), // Don't go below 0
+      maxValue + topPadding,
+    ];
+  }, [data]);
+
+  // Calculate y-axis ticks with padding at top and bottom
+  const yAxisTicks = useMemo(() => {
+    if (!data?.length) return [];
+
+    const [min, max] = yDomain;
+    const range = max - min;
+
+    const tickPaddingFactor = 0.1; // 10% padding on each end
+    const tickMin = min + (range * tickPaddingFactor);
+    const tickMax = max - (range * tickPaddingFactor);
+    const tickRange = tickMax - tickMin;
+
+    // Generate 3 ticks within the padded range
+    return Array.from({ length: 4 }, (_, i) => tickMin + (tickRange * (i / 3)));
+  }, [data, yDomain]);
+
   useEffect(() => {
-    if (!chartContainerRef.current) return;
-
-    const chart = createChart(chartContainerRef.current, {
-      layout: {
-        background: { type: ColorType.Solid, color: "transparent" },
-        textColor: "rgba(255, 255, 255, 0.5)",
-      },
-      grid: {
-        vertLines: { visible: false },
-        horzLines: { visible: false },
-      },
-      rightPriceScale: { 
-        visible: showAxes,
-        borderVisible: false,
-        format: {
-          type: 'custom',
-          formatter: (price: number) => formatShortCurrency(price),
-        } as PriceFormat,
-      },
-      leftPriceScale: { visible: false },
-      timeScale: {
-        visible: showAxes,
-        borderVisible: false,
-        fixLeftEdge: true,
-        fixRightEdge: true,
-        timeVisible: true,
-      },
-      crosshair: {
-        mode: CrosshairMode.Normal,
-        vertLine: { visible: false, labelVisible: false },
-        horzLine: { visible: false, labelVisible: false },
-      },
-      width: chartContainerRef.current.clientWidth,
-      height: chartContainerRef.current.clientHeight,
-    });
-
-    chartRef.current = chart;
-
-    const areaSeries = chart.addAreaSeries({
-      lineColor: "#2962FF",
-      topColor: "#2962FF",
-      bottomColor: "rgba(41, 98, 255, 0.05)",
-      lineWidth: 2,
-      priceFormat: {
-        type: 'custom',
-        formatter: (price: number) => formatShortCurrency(price),
-      } as PriceFormat,
-      lastValueVisible: false,
-      priceLineVisible: false,
-    });
-
-    seriesRef.current = areaSeries;
-
-    // Handle tooltip
-    chart.subscribeCrosshairMove((param) => {
-      if (
-        !param.point ||
-        !param.time ||
-        param.point.x < 0 ||
-        param.point.x > chartContainerRef.current!.clientWidth ||
-        param.point.y < 0 ||
-        param.point.y > chartContainerRef.current!.clientHeight
-      ) {
-        setTooltip(null);
-        return;
-      }
-
-      const price = param.seriesData.get(areaSeries)?.value;
-      if (typeof price !== "number") {
-        setTooltip(null);
-        return;
-      }
-
-      setTooltip({
-        time: param.time as number,
-        price,
-        x: param.point.x,
-        y: param.point.y,
-      });
-    });
-
-    // Set up ResizeObserver for container resizing
-    const resizeObserver = new ResizeObserver(entries => {
-      const { width, height } = entries[0].contentRect;
-      chart.applyOptions({
-        width,
-        height,
-      });
-      chart.timeScale().fitContent();
-    });
-
-    resizeObserver.observe(chartContainerRef.current);
-    resizeObserverRef.current = resizeObserver;
-
-    return () => {
-      chart.remove();
-      resizeObserver.disconnect();
-    };
-  }, [showAxes]);
-
-  // Update chart data
-  useEffect(() => {
-    if (!seriesRef.current || !data) return;
-    seriesRef.current.setData(data);
-    chartRef.current?.timeScale().fitContent();
+    if (data) {
+      setChartData(
+        data.map((d) => ({
+          time: d.time,
+          value: d.value,
+        }))
+      );
+    }
   }, [data]);
 
   return (
-    <div className="space-y-4 h-full flex flex-col">
+    <div className="h-full w-full flex flex-col">
       {showTimeframeSelector && (
-        <div className="flex justify-start">
+        <div className="flex justify-start mb-4">
           <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
         </div>
       )}
-      <div className={cn("relative flex-1 w-full rounded-lg", className)}>
-        <div ref={chartContainerRef} className="h-full w-full" />
-        {tooltip && (
-          <ChartTooltip
-            time={tooltip.time}
-            price={tooltip.price}
-            timeframe={timeframe}
-            style={{
-              left: tooltip.x + "px",
-              top: tooltip.y + "px",
-              transform: "translate(-50%, -100%)",
-            }}
-          />
-        )}
-        {error && (
+      <div
+        className={cn("relative flex-1 w-full", className)}
+        style={{ height: showTimeframeSelector ? "calc(100% - 48px)" : height }}
+      >
+        {error ? (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-destructive">
             Failed to load chart data
           </div>
-        )}
-        {isLoading && (
+        ) : isLoading ? (
           <div className="absolute inset-0 animate-pulse bg-muted" />
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              className="min-w-full flex flex-col justify-between gap-x-4"
+              data={chartData}
+              margin={{ top: 10, right: showAxes ? 0 : 0, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#2962FF" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#2962FF" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              {showAxes && (
+                <>
+                  <XAxis
+                    dataKey="time"
+                    tickFormatter={(time) => formatTimeLabel(time, timeframe)}
+                    stroke="var(--muted-foreground)"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    minTickGap={50}
+                    dy={10}
+                  />
+                  <YAxis
+                    orientation="right"
+                    domain={yDomain}
+                    ticks={yAxisTicks}
+                    tickFormatter={formatYAxisTick}
+                    stroke="var(--muted-foreground)"
+                    fontSize={11}
+                    tickLine={true}
+                    axisLine={false}
+                    width={60}
+                    dx={0}
+                    tick
+                    tickMargin={8}
+                    minTickGap={8}
+                  />
+                </>
+              )}
+              <Tooltip
+                content={({ active, payload, label }) => (
+                  <CustomTooltip
+                    active={active}
+                    payload={payload as { value: number; payload: ChartDataPoint }[]}
+                    label={label}
+                    timeframe={timeframe}
+                  />
+                )}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#2962FF"
+                strokeWidth={2}
+                fill="url(#colorValue)"
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         )}
       </div>
     </div>
   );
 }
+
+// import { useEffect, useState, useMemo } from "react";
+// import { TimeFrame, ChartTimeFrame } from "./chart-timeframe";
+// import { useChartData } from "@/hooks/useChartData";
+// import { cn } from "@/lib/utils";
+// import { formatTimeLabel, formatTooltipTime } from "@/lib/chart-utils";
+// import { parseAndFormatCurrency } from "@/lib/currency-utils";
+// import {
+//   Area,
+//   AreaChart,
+//   ResponsiveContainer,
+//   Tooltip,
+//   XAxis,
+//   YAxis,
+// } from "recharts";
+
+// interface PriceChartProps {
+//   symbol: string;
+//   timeframe: TimeFrame;
+//   onTimeframeChange: (timeframe: TimeFrame) => void;
+//   showTimeframeSelector?: boolean;
+//   height?: string;
+//   className?: string;
+//   showAxes?: boolean;
+// }
+
+// interface CustomTooltipProps {
+//   active?: boolean;
+//   payload?: Array<{ value: number; }>;
+//   label?: number;
+//   timeframe: TimeFrame;
+// }
+
+// const CustomTooltip = ({ active, payload, label, timeframe }: CustomTooltipProps) => {
+//   if (!active || !payload?.length) return null;
+
+//   return (
+//     <div className="px-3 py-2 bg-[var(--popover)] text-[var(--popover-foreground)] rounded-[var(--radius-sm)] shadow-md border-[var(--border)] border">
+//       <div className="text-sm font-medium">
+//         {formatTooltipTime(label, timeframe)}
+//       </div>
+//       <div className="text-muted-foreground text-xs">
+//         {parseAndFormatCurrency(payload[0].value)}
+//       </div>
+//     </div>
+//   );
+// };
+
+// function formatYAxisTick(value: number) {
+//   return parseAndFormatCurrency(value, undefined, value < 1 ? 4 : 2);
+// }
+
+// export function PriceChart({
+//   symbol,
+//   timeframe,
+//   onTimeframeChange,
+//   showTimeframeSelector = true,
+//   height = "100%",
+//   className,
+//   showAxes = false,
+// }: PriceChartProps) {
+//   const { data, isLoading, error } = useChartData(symbol, timeframe);
+//   const [chartData, setChartData] = useState<any[]>([]);
+
+//   // Calculate domain with 1% padding
+//   const yDomain = useMemo(() => {
+//     if (!data?.length) return [0, 0];
+
+//     const values = data.map(d => d.value);
+//     const minValue = Math.min(...values);
+//     const maxValue = Math.max(...values);
+//     const padding = (maxValue - minValue) * 0.01;
+
+//     return [
+//       Math.max(0, minValue - padding), // Don't go below 0
+//       maxValue + padding
+//     ];
+//   }, [data]);
+
+//   // Calculate y-axis ticks
+//   const yAxisTicks = useMemo(() => {
+//     if (!data?.length) return [];
+
+//     const [min, max] = yDomain;
+//     const range = max - min;
+//     const step = range / 4;
+
+//     return Array.from({ length: 5 }, (_, i) => min + (step * i));
+//   }, [data, yDomain]);
+
+//   useEffect(() => {
+//     if (data) {
+//       setChartData(data.map(d => ({
+//         time: d.time,
+//         value: d.value
+//       })));
+//     }
+//   }, [data]);
+
+//   return (
+//     <div className="h-full w-full flex flex-col">
+//       {showTimeframeSelector && (
+//         <div className="flex justify-start mb-4">
+//           <ChartTimeFrame value={timeframe} onValueChange={onTimeframeChange} />
+//         </div>
+//       )}
+//       <div className={cn("relative flex-1 w-full", className)} style={{ height: showTimeframeSelector ? 'calc(100% - 48px)' : height }}>
+//         {error ? (
+//           <div className="absolute inset-0 flex items-center justify-center text-sm text-destructive">
+//             Failed to load chart data
+//           </div>
+//         ) : isLoading ? (
+//           <div className="absolute inset-0 animate-pulse bg-muted" />
+//         ) : (
+//           <ResponsiveContainer width="100%" height="100%">
+//             <AreaChart data={chartData} margin={{ top: 10, right: showAxes ? 16 : 0, left: 0, bottom: 0 }}>
+//               <defs>
+//                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+//                   <stop offset="5%" stopColor="#2962FF" stopOpacity={0.3} />
+//                   <stop offset="95%" stopColor="#2962FF" stopOpacity={0} />
+//                 </linearGradient>
+//               </defs>
+//               {showAxes && (
+//                 <>
+//                   <XAxis
+//                     dataKey="time"
+//                     tickFormatter={(time) => formatTimeLabel(time, timeframe)}
+//                     stroke="var(--muted-foreground)"
+//                     fontSize={12}
+//                     tickLine={false}
+//                     axisLine={false}
+//                     minTickGap={50}
+//                     dy={10}
+//                   />
+//                   <YAxis
+//                     orientation="right"
+//                     domain={yDomain}
+//                     ticks={yAxisTicks}
+//                     tickFormatter={formatYAxisTick}
+//                     stroke="var(--muted-foreground)"
+//                     fontSize={12}
+//                     tickLine={false}
+//                     axisLine={false}
+//                     width={80}
+//                     dx={-8}
+//                   />
+//                 </>
+//               )}
+//               <Tooltip
+//                 content={({ active, payload, label }) => (
+//                   <CustomTooltip
+//                     active={active}
+//                     payload={payload}
+//                     label={label}
+//                     timeframe={timeframe}
+//                   />
+//                 )}
+//               />
+//               <Area
+//                 type="monotone"
+//                 dataKey="value"
+//                 stroke="#2962FF"
+//                 strokeWidth={2}
+//                 fill="url(#colorValue)"
+//                 isAnimationActive={false}
+//               />
+//             </AreaChart>
+//           </ResponsiveContainer>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }

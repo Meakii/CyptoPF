@@ -48,8 +48,12 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
 
     fetchData();
 
+    // Set up polling for live updates
+    const interval = setInterval(fetchData, 30000); // Update every 30 seconds
+
     return () => {
       mounted = false;
+      clearInterval(interval);
     };
   }, [symbol, timeframe]);
 

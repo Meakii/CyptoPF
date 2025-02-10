@@ -41,13 +41,13 @@ export function Header({ isCollapsed, onToggle, isAnimating }: HeaderProps) {
 
         <div className="flex items-center gap-6">
           <div className="flex flex-col items-end">
-            <span className="text-xs text-[var(--muted-foreground)]">Cash available</span>
+            <span className="text-xs text-muted-foreground">Cash available</span>
             <HiddenFigure 
               value={parseAndFormatCurrency(CASH_AVAILABLE)} 
               className="text-sm font-medium"
             />
           </div>
-          {/* <HideFiguresToggle /> */}
+          <HideFiguresToggle />
           <HelpMenu />
           <UserMenu />
         </div>

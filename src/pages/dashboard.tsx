@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Wallet, LineChart, DollarSign, Coins } from "lucide-react";
 import {
   BriefcaseDollarIcon, MoneySecurityIcon, PieChartIcon
 } from "hugeicons-react";
@@ -11,7 +10,7 @@ import { useAssetPrices } from "@/hooks/useAssetPrices";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { parseAndFormatCurrency, stripCurrencySymbols } from "@/lib/currency-utils";
 import { StatsCard } from "@/components/dashboard/StatsCard";
-import { HiddenFigure } from '@/components/ui/hide-figures';
+// import { HiddenFigure } from '@/components/ui/hide-figures';
 
 const PORTFOLIO_HOLDINGS = [
   { symbol: "BTCUSDT", initialValue: 15000 },
@@ -63,7 +62,7 @@ export function Dashboard() {
         <div className="mx-10 space-y-8">
           <div className="grid grid-cols-12 gap-4 h-[420px]">
             <div className="col-span-3 grid grid-rows-3 gap-4">
-              <StatsCard 
+            <StatsCard 
                 icon={BriefcaseDollarIcon}
                 label="Portfolio value"
                 value={parseAndFormatCurrency(totalCryptoValue + CASH_AVAILABLE)}

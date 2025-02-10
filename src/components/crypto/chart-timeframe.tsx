@@ -44,6 +44,7 @@ export function ChartTimeFrame({ value, onValueChange }: ChartTimeFrameProps) {
               "hover:outline-[var(--border)] hover:outline-1 hover:text-[var(--tab-foreground-hover)]",
               "peer-[&[aria-checked='true']]:outline-[var(--muted-border)]",
               "peer-[&[aria-checked='true']]:outline-1",
+              "peer-[&[aria-checked='true']]:outline",
               "peer-[&[aria-checked='true']]:bg-[var(--tab-background-active)]",
               "peer-[&[aria-checked='true']]:text-[var(--tab-foreground-active)]",
               "peer-focus-visible:ring-1 peer-focus-visible:ring-(--ring) peer-focus-visible:ring-offset-1"

@@ -17,50 +17,33 @@ export const CURRENCY_CONFIGS: Record<string, CurrencyConfig> = {
 // Default currency 
 export const DEFAULT_CURRENCY = 'AUD';
 
-function formatDecimals(value: number): string {
+function formatDecimals(value: number, decimals: number = 2): string {
   // Convert to string and split into whole and decimal parts
   const [whole, decimal] = value.toString().split('.');
   
   if (!decimal) {
-    return `${whole}.00`;
+    return `${whole}.${'0'.repeat(decimals)}`;
   }
 
-  // Handle decimal part based on the value
-  let formattedDecimal = decimal;
-  let decimalPlaces = 2; // default
-
-  // Determine decimal places based on value
-  if (value < 0.1) {
-    decimalPlaces = 6;
-  } else if (value < 1) {
-    decimalPlaces = 4;
-  }
-
-  // If decimal is longer than desired places, round it based on the next digit
-  if (decimal.length > decimalPlaces) {
-    const nextDigit = parseInt(decimal[decimalPlaces]);
-    const currentValue = parseInt(decimal.slice(0, decimalPlaces));
+  // If decimal is longer than desired places, round it
+  if (decimal.length > decimals) {
+    const nextDigit = parseInt(decimal[decimals]);
+    const currentValue = parseInt(decimal.slice(0, decimals));
     
     // Round up or down based on the next digit
     if (nextDigit >= 5) {
-      formattedDecimal = (currentValue + 1).toString().padEnd(decimalPlaces, '0');
-    } else {
-      formattedDecimal = decimal.slice(0, decimalPlaces);
+      const rounded = (currentValue + 1).toString().padEnd(decimals, '0');
+      return `${whole}.${rounded}`;
     }
+    return `${whole}.${decimal.slice(0, decimals)}`;
   }
 
-  // Ensure correct number of decimal places
-  if (formattedDecimal.length < decimalPlaces) {
-    formattedDecimal = formattedDecimal.padEnd(decimalPlaces, '0');
-  } else if (formattedDecimal.length > decimalPlaces) {
-    formattedDecimal = formattedDecimal.slice(0, decimalPlaces);
-  }
-
-  return `${whole}.${formattedDecimal}`;
+  // Pad with zeros if needed
+  return `${whole}.${decimal.padEnd(decimals, '0')}`;
 }
 
 // Helper function to format currency
-export function parseAndFormatCurrency(value: string | number, currency: string = DEFAULT_CURRENCY): string {
+export function parseAndFormatCurrency(value: string | number, currency: string = DEFAULT_CURRENCY, decimals: number = 2): string {
   const config = CURRENCY_CONFIGS[currency] || CURRENCY_CONFIGS[DEFAULT_CURRENCY];
   
   // Convert string to number if needed
@@ -75,8 +58,8 @@ export function parseAndFormatCurrency(value: string | number, currency: string 
   // Check if the value is a valid number
   if (isNaN(numericValue)) return "-";
   
-  // Format the number with our custom decimal handling
-  const formatted = formatDecimals(numericValue);
+  // Format the number with specified decimals
+  const formatted = formatDecimals(numericValue, decimals);
   
   // Add thousand separators
   const [whole, decimal] = formatted.split('.');
@@ -101,4 +84,46 @@ export function formatShortCurrency(value: number): string {
     maximumFractionDigits: 1
   });
   return formatter.format(value);
+}
+
+// Format numbers in a compact way for chart axes
+export function formatCompactCurrency(value: number): string {
+  if (value >= 1_000_000) {
+    return `$${(value / 1_000_000).toFixed(1)}M`;
+  } else if (value >= 1000) {
+    return `$${(value / 1000).toFixed(1)}k`;
+  }
+  return parseAndFormatCurrency(value);
+}
+
+export function calculateChartYAxisTicks(min: number, max: number): number[] {
+  const range = max - min;
+  const step = calculateTickStep(max);
+  
+  // Calculate rounded min and max values
+  const roundedMin = Math.floor(min / step) * step;
+  const roundedMax = Math.ceil(max / step) * step;
+  
+  // Generate 5 evenly spaced ticks
+  const ticks = [];
+  for (let i = 0; i <= 4; i++) {
+    const tick = roundedMin + (i * (roundedMax - roundedMin) / 4);
+    ticks.push(tick);
+  }
+  
+  return ticks;
+}
+
+function calculateTickStep(maxValue: number): number {
+  if (maxValue < 10) {
+    return 0.01; // Round to nearest cent for values under $10
+  } else if (maxValue < 100) {
+    return 10; // Round to nearest $10 for values under $100
+  } else if (maxValue < 1000) {
+    return 50; // Round to nearest $50 for values under $1000
+  } else if (maxValue < 10000) {
+    return 100; // Round to nearest $100 for values under $10000
+  } else {
+    return 1000; // Round to nearest $1000 for values over $10000
+  }
 }

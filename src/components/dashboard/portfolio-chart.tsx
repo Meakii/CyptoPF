@@ -3,6 +3,9 @@ import { TimeFrame } from "@/lib/types/timeframe";
 import { PriceChart } from '@/components/crypto/price-chart';
 import { PortfolioHeader } from './portfolio/header';
 import { LineChart } from 'lucide-react';
+import {
+  ChartLineData01Icon
+} from "hugeicons-react";
 
 interface PortfolioChartProps {
   timeframe: TimeFrame;
@@ -18,11 +21,10 @@ export function PortfolioChart({
   performancePercentage
 }: PortfolioChartProps) {
   return (
-    
     <Card className="h-full flex flex-col">
       <CardHeader className="flex-none space-y-0">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <LineChart className="h-5 w-5" />
+          <ChartLineData01Icon className="h-5 w-5" />
           <span className="font-medium">Portfolio</span>
         </div>
         <PortfolioHeader

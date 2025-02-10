@@ -12,7 +12,13 @@ interface KlineData {
 
 export async function fetchBinanceAPI<T>(endpoint: string): Promise<T> {
   try {
-    const response = await fetch(`${BINANCE_API_URL}${endpoint}`);
+    const response = await fetch(`${BINANCE_API_URL}${endpoint}`, {
+      headers: {
+        'Accept': 'application/json',
+      },
+      // Add cache control to avoid rate limiting
+      cache: 'force-cache'
+    });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -83,7 +89,9 @@ export async function fetchAUDRate(): Promise<number> {
   }
 
   try {
-    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=AUD');
+    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=AUD', {
+      cache: 'force-cache'
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch AUD rate');
     }

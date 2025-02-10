@@ -44,6 +44,7 @@ export function TimeFrameSelector({
               "hover:outline-(--border) hover:outline-1 hover:text-(--tab-foreground-hover)",
               "peer-[&[aria-checked='true']]:outline-(--muted-border)",
               "peer-[&[aria-checked='true']]:outline-1",
+              "peer-[&[aria-checked='true']]:outline",
               "peer-[&[aria-checked='true']]:bg-(--tab-background-active)",
               "peer-[&[aria-checked='true']]:text-(--tab-foreground-active)",
               "peer-focus-visible:ring-1 peer-focus-visible:ring-(--ring) peer-focus-visible:ring-offset-1"

@@ -139,17 +139,43 @@
   --primitive-smoke-800: #161618;
   --primitive-smoke-900: #111113;
   --primitive-smoke-950: #0a0a0b;
-  --primitive-ash-50: #fafafa;
+  --primitive-ash-50: #F7F7F7;
   --primitive-ash-100: #f5f5f5;
-  --primitive-ash-200: #efeff0;
-  --primitive-ash-300: #eaeaeb;
-  --primitive-ash-400: #e5e4e7;
-  --primitive-ash-500: #dadadc;
-  --primitive-ash-600: #d0cfd3;
-  --primitive-ash-700: #c5c5c9;
-  --primitive-ash-800: #bbbabf;
-  --primitive-ash-900: #b0afb6;
-  --primitive-ash-950: #a6a5ac;
+  --primitive-ash-200: #F0F0F0;
+  --primitive-ash-300: #EBEBEB;
+  --primitive-ash-400: #E6E6E6;
+  --primitive-ash-500: #E0E0E0;
+  --primitive-ash-600: #DBDBDB;
+  --primitive-ash-700: #D6D6D6;
+  --primitive-ash-800: #D1D1D1;
+  --primitive-ash-900: #CCCCCC;
+  --primitive-ash-950: #C7C7C7;
+
+  --primitive-cherry-50: #F6D7D7;
+  --primitive-cherry-100: #F2C3C3;
+  --primitive-cherry-200: #EDAFAF;
+  --primitive-cherry-300: #E58686;
+  --primitive-cherry-400: #DC5E5E;
+  --primitive-cherry-500: #D33636;
+  --primitive-cherry-600: #A92B2B;
+  --primitive-cherry-700: #7F2020;
+  --primitive-cherry-800: #541616;
+  --primitive-cherry-900: #3F1010;
+  --primitive-cherry-950: #2A0B0B;
+
+  --primitive-leaf-50: #9EE1B7;
+  --primitive-leaf-100: #8CD5A8;
+  --primitive-leaf-200: #7AC998;
+  --primitive-leaf-300: #57B279;
+  --primitive-leaf-400: #339A5A;
+  --primitive-leaf-500: #0F833B;
+  --primitive-leaf-600: #0C692F;
+  --primitive-leaf-700: #094F23;
+  --primitive-leaf-800: #063418;
+  --primitive-leaf-900: #052712;
+  --primitive-leaf-950: #031A0C;
+
+
   --text-font-weights-bold: Bold;
   --text-font-weights-thin: Thin;
   --text-font-weights-normal: Normal;
@@ -248,8 +274,8 @@
   --info-foreground: var(--primitive-blue-600);
   --error-foreground: var(--primitive-red-700);
   --warning-foreground: var(--primitive-amber-700);
-  --downtrend-foreground: var(--primitive-rose-700);
-  --uptrend-foreground: var(--primitive-emerald-700);
+  --downtrend-foreground: var(--primitive-cherry-500);
+  --uptrend-foreground: var(--primitive-leaf-500);
   --muted-border: var(--primitive-zinc-200);
   --muted: var(--primitive-ash-50);
   --border: var(--primitive-zinc-300);
@@ -418,7 +444,7 @@
     /* font-family: 'PlusJakartaSans', 'Arial', sans-serif; */
 
     line-height: 1.5;
-    font-weight: 400;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     color-scheme: light dark;
     font-synthesis: none;
@@ -636,4 +662,28 @@
   font-named-instance: 'ExtraBold';
   src: url('./fonts/PlusJakartaSans-ExtraBold.woff2') format('woff2-variations'),
   url('./fonts/PlusJakartaSans-ExtraBold.woff') format('woff-variations');
+}
+
+
+.recharts-wrapper {
+  min-width: 100%;
+  max-width: 100%;
+}
+.recharts-area {
+  min-width: 100%;
+}
+
+.recharts-cartesian-axis-tick-line {
+  display: none;
+}
+
+.recharts-yAxis {
+  opacity: 1;
+  width: 2rem;
+  text-align: right;
+}
+
+.recharts-surface {
+  display: flex;
+  row-gap: 12px;
 }

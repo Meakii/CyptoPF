@@ -1,4 +1,4 @@
-import { formatChartTime } from '@/lib/format-utils';
+import { formatTooltipTime } from '@/lib/chart-utils';
 import { TimeFrame } from '../chart-timeframe';
 
 interface ChartTooltipProps {
@@ -9,7 +9,7 @@ interface ChartTooltipProps {
 }
 
 export function ChartTooltip({ time, price, timeframe, style }: ChartTooltipProps) {
-  const formattedTime = formatChartTime(time, timeframe);
+  const formattedTime = formatTooltipTime(time, timeframe);
   const formattedPrice = new Intl.NumberFormat('en-AU', {
     style: 'currency',
     currency: 'AUD',
@@ -17,7 +17,7 @@ export function ChartTooltip({ time, price, timeframe, style }: ChartTooltipProp
 
   return (
     <div 
-      className="absolute px-3 py-2 bg-[var(--popover)] text-(--popover-foreground) rounded-[var(--radius-sm)]  shadow-md border-[var(--border)] border pointer-events-none z-50"
+      className="absolute px-3 py-2 bg-[var(--popover)] text-[var(--popover-foreground)] rounded-[var(--radius-sm)]  shadow-md border-[var(--border)] border pointer-events-none z-50"
       style={style}
     >
       <div className="text-sm font-medium">{formattedTime}</div>

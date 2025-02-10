@@ -27,12 +27,12 @@ export function StatsCard({
     bg-[linear-gradient(71deg,var(--border),var(--color-blue-900),var(--border))]">
 
       <Card className={cn(
-        "relative bg-[var(--background)] rounded-[var(--radius-md)]  p-4 h-full border-0 flex flex-col",
+        "relative rounded-[var(--radius-md)]  p-4 h-full border-0 flex flex-col",
         className
       )}>
         <div className="flex justify-between items-start">
-          <div className="flex items-center justify-center size-5 relative">
-            <Icon className="relative z-10 text-muted-foreground" {...iconProps} />
+          <div className="flex items-center justify-center size-7 relative">
+            <Icon className="relative z-10 text-[var(--primary)] h-7 w-7" {...iconProps} />
           </div>
           <Tooltip content={info}>
             <button className="text-muted-foreground hover:text-foreground focus:text-foreground transition-colors">

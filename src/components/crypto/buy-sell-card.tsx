@@ -27,8 +27,8 @@ export function BuySellCard({
   const { price, priceChange, isLoading, error } = useCryptoPrice(symbol);
 
   return (
-    <div className="rounded-[var(--radius-sm)] border-[var(--border)] border bg-card">
-      <AnimatedTabs value={tab} onValueChange={setTab} className="w-full">
+    <div className="rounded-[var(--radius-sm)] border-[var(--border)] border bg-card h-full">
+      <AnimatedTabs value={tab} onValueChange={setTab} className="w-full h-full">
         <AnimatedTabsList
           className="grid w-full grid-cols-2"
           variant="underlined"
@@ -42,13 +42,13 @@ export function BuySellCard({
           </AnimatedTabsTrigger>
         </AnimatedTabsList>
 
-        <div className="p-6">
+        <div className="p-6 flex-1">
           <AnimatedTabsContent
             value="buy"
-            className="mt-0 space-y-4"
+            className="mt-0 space-y-4 h-full"
             tabIndex={0}
           >
-            <div className="space-y-4">
+            <div className="space-y-4 h-full">
               <CryptoSelector />
 
               <div className="flex items-center justify-between">
@@ -78,12 +78,14 @@ export function BuySellCard({
                 )}
               </div>
 
-              <div className="h-[300px]">
+              <div className="h-[300px] w-full">
                 <PriceChart
                   symbol={symbol}
                   timeframe={timeframe}
                   onTimeframeChange={onTimeframeChange}
                   showAxes={false}
+                  showTimeframeSelector={true}
+                  height="100%"
                 />
               </div>
             </div>

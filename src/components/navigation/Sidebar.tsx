@@ -30,7 +30,7 @@ const Sidebar = ({ className, isCollapsed, onToggle, onAnimationComplete }: Side
         width: isCollapsed ? 64 : 256,
         transition: {
           ...transition,
-          delay: 0.125
+          delay: 0.2
         }
       }}
     >

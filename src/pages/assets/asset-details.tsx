@@ -56,17 +56,18 @@ export function AssetDetailsPage() {
           </div>
         </div>
 
-        {/* Rest of the component remains the same */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Chart Column */}
           <div className="lg:col-span-2">
             <Card className="p-6">
-              <PriceChart 
-                symbol={crypto.symbol}
-                timeframe={timeframe}
-                onTimeframeChange={setTimeframe}
-                height="h-[400px]"
-              />
+              <div className="h-[400px] w-full">
+                <PriceChart 
+                  symbol={crypto.symbol}
+                  timeframe={timeframe}
+                  onTimeframeChange={setTimeframe}
+                  showAxes={true}
+                  height="100%"
+                />
+              </div>
             </Card>
 
             <div className="mt-8 space-y-6">
@@ -88,7 +89,6 @@ export function AssetDetailsPage() {
             </div>
           </div>
 
-          {/* Stats Column */}
           <div>
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-6">Market Stats</h2>
