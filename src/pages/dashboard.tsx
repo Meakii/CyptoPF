@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
-  BriefcaseDollarIcon, MoneySecurityIcon, PieChartIcon
+  BriefcaseDollarIcon,
+  MoneySecurityIcon,
+  PieChartIcon,
 } from "hugeicons-react";
 import { TimeFrame } from "@/components/crypto/chart-timeframe";
 import { PortfolioChart } from "@/components/dashboard/portfolio-chart";
@@ -8,7 +10,10 @@ import { HoldingsTable, Holding } from "@/components/dashboard/holdings-table";
 import { PageTransition } from "@/components/layout/page-transition";
 import { useAssetPrices } from "@/hooks/useAssetPrices";
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
-import { parseAndFormatCurrency, stripCurrencySymbols } from "@/lib/currency-utils";
+import {
+  parseAndFormatCurrency,
+  stripCurrencySymbols,
+} from "@/lib/currency-utils";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 // import { HiddenFigure } from '@/components/ui/hide-figures';
 
@@ -59,22 +64,24 @@ export function Dashboard() {
       <div>
         <WelcomeBanner />
 
-        <div className="mx-10 space-y-8">
-          <div className="grid grid-cols-12 gap-4 h-[420px]">
-            <div className="col-span-3 grid grid-rows-3 gap-4">
-            <StatsCard 
+        <div className="mx-10 space-y-8  ">
+          <div className="flex flex-row gap-x-6 h-[420px]">
+            <div className="min-w-[18rem] grid grid-rows-3 gap-4">
+              <StatsCard
                 icon={BriefcaseDollarIcon}
                 label="Portfolio value"
-                value={parseAndFormatCurrency(totalCryptoValue + CASH_AVAILABLE)}
+                value={parseAndFormatCurrency(
+                  totalCryptoValue + CASH_AVAILABLE
+                )}
                 info="Your total portfolio value across all assets"
               />
-              <StatsCard 
+              <StatsCard
                 icon={MoneySecurityIcon}
                 label="Cash available"
                 value={parseAndFormatCurrency(CASH_AVAILABLE)}
                 info="Your current available cash balance for trading"
               />
-              <StatsCard 
+              <StatsCard
                 icon={PieChartIcon}
                 label="Crypto holdings value"
                 value={parseAndFormatCurrency(totalCryptoValue)}
@@ -82,7 +89,7 @@ export function Dashboard() {
               />
             </div>
 
-            <div className="col-span-9">
+            <div className="w-full">
               <PortfolioChart
                 timeframe={timeframe}
                 onTimeframeChange={setTimeframe}
