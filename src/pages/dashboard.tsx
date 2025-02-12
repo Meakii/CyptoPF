@@ -1,7 +1,8 @@
 import { useState } from "react";
 import {
   ChartLineData01Icon,
-  PieChartIcon,
+  // PieChartIcon,
+  Wallet02Icon,
   DollarCircleIcon,
 } from "hugeicons-react";
 import { TimeFrame } from "@/components/crypto/chart-timeframe";
@@ -76,7 +77,7 @@ export function Dashboard() {
                 info="Your current available cash balance for trading"
               />
               <StatsCard
-                icon={PieChartIcon}
+                icon={Wallet02Icon}
                 label="Crypto holdings value"
                 value={
                   <HiddenFigure
