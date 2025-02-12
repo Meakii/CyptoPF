@@ -25,9 +25,9 @@ export const menuSections: MenuSectionType[] = [
       { icon: ChartLineData01Icon, label: "Dashboard", href: "/" },
       {
         icon: DiscoverCircleIcon,
-        label: "Assets",
-        href: "/assets",
-        childRoutes: ["/assets/$cryptoId"],
+        label: "Explore",
+        href: "/explore",
+        childRoutes: ["/explore/$cryptoId"],
       },
       {
         icon: CoinsSwapIcon,
@@ -37,7 +37,7 @@ export const menuSections: MenuSectionType[] = [
       },
       {
         icon: MoneyReceiveCircleIcon,
-        label: "Deposit AUD",
+        label: "Deposit cash",
         href: "/deposit-aud",
       },
       { icon: CircleArrowUpRightIcon, label: "Withdraw", href: "/withdraw" },

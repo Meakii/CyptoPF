@@ -31,12 +31,12 @@ export function AssetDetailsPage() {
 
   return (
     <PageTransition>
-      <div className="container p-8">
+      <div className="flex flex-col px-[80px] pt-8">
         <Breadcrumb className="mb-8">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/assets">Assets</Link>
+                <Link to="/explore">Explore</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>

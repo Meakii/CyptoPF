@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { AssetDetailsPage } from '@/pages/assets/asset-details';
+import { AssetDetailsPage } from '@/pages/explore/asset-details';
 
 export const Route = createFileRoute('/assets/details')({
   component: AssetDetailsPage,

@@ -1,9 +1,9 @@
 import { createRouter, createRoute, redirect } from '@tanstack/react-router';
 import { Route as rootRoute } from './routes/__root';
 import { Dashboard } from '@/pages/dashboard';
-import { AssetsPage } from '@/pages/assets';
-import { CryptoPage } from '@/pages/assets';
-import { AssetDetailsPage } from '@/pages/assets/asset-details';
+import { ExplorePage } from '@/pages/explore';
+// import { CryptoPage } from '@/pages/assets';
+import { AssetDetailsPage } from '@/pages/explore/asset-details';
 import { BuySellPage } from '@/pages/crypto/buy-sell';
 import { DepositAUDPage } from '@/pages/deposit-aud';
 import { DepositCryptoPage } from '@/pages/deposit-crypto';
@@ -26,8 +26,8 @@ const cryptoRoute = createRoute({
 
 const assetsRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/assets',
-  component: AssetsPage
+  path: '/explore',
+  component: ExplorePage
 });
 
 const assetDetailsRoute = createRoute({

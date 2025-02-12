@@ -14,7 +14,7 @@ import { useAssetPrices } from '@/hooks/useAssetPrices';
 
 type SortDirection = 'none' | 'asc' | 'desc';
 
-export function AssetsPage() {
+export function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [sortDirection, setSortDirection] = useState<SortDirection>('none');
@@ -58,13 +58,13 @@ export function AssetsPage() {
   return (
     <PageTransition>
       <div className="container mx-auto p-8">
-        <h1 className="text-3xl font-bold tracking-tight mb-8">Assets</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-8">Explore</h1>
         
         <div className="space-y-6">
           <AnimatedTabs value={activeTab} onValueChange={setActiveTab}>
             <div className="border-b border-[var(--border)]">
               <AnimatedTabsList className="w-full justify-start" variant="underlined" value={activeTab}>
-                <AnimatedTabsTrigger value="all" variant="underlined" startIcon={<Coins02Icon className="h-5 w-5" />}>All</AnimatedTabsTrigger>
+                <AnimatedTabsTrigger value="all" variant="underlined" startIcon={<Coins02Icon className="h-5 w-5" />}>Asset prices</AnimatedTabsTrigger>
                 <AnimatedTabsTrigger value="watchlist" variant="underlined" startIcon={<StarIcon className="h-5 w-5" />}>Watchlist</AnimatedTabsTrigger>
               </AnimatedTabsList>
             </div>

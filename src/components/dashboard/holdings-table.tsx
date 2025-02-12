@@ -69,7 +69,7 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
               <PieChart className="h-5 w-5 text-[var(--foreground)]" />
               <h2 className="text-lg font-semibold">Crypto holdings</h2>
             </div>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <span className="btcm-heading-lg text-[var(--muted-foreground)]">P&L</span>
               <div className="h-4 w-px bg-border" />
               <span className="btcm-heading-lg text-[var(--uptrend-foreground)]">
@@ -77,22 +77,8 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
               </span>
               <div className="h-4 w-px bg-border" />
               <span className="btcm-heading-lg text-[var(--uptrend-foreground)]">+68.32%</span>
-              <TooltipProvider delayDuration={20}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="text-muted-foreground hover:text-foreground focus:text-foreground transition-colors">
-                      <Info className="h-4 w-4" />
-                      <span className="sr-only">
-                        More information about P&L
-                      </span>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Total profit/loss across all your crypto holdings</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+    
+            </div> */}
           </div>
           <Input
             placeholder="Search assets..."

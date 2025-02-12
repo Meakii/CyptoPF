@@ -1,10 +1,16 @@
-import { HelpCircle, Ticket, Network, MessageSquare } from 'lucide-react';
+import {
+  HelpCircleIcon,
+  SecurityWifiIcon,
+  Ticket01Icon,
+  BubbleChatIcon,
+} from "hugeicons-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 export function HelpMenu() {
   return (
@@ -18,24 +24,24 @@ export function HelpMenu() {
             focus:ring-ring
           `}
         >
-          <HelpCircle className="w-5 h-5 text-(--muted-foreground)" />
+          <HelpCircleIcon className="w-5 h-5 text-(--muted-foreground)" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem>
-          <HelpCircle className="w-4 h-4 mr-2" />
+          <HelpCircleIcon className="w-4 h-4 mr-2" />
           <span>Support center</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Ticket className="w-4 h-4 mr-2" />
+          <Ticket01Icon className="w-4 h-4 mr-2" />
           <span>Submit a ticket</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Network className="w-4 h-4 mr-2" />
+          <SecurityWifiIcon className="w-4 h-4 mr-2" />
           <span>Status page</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <MessageSquare className="w-4 h-4 mr-2" />
+          <BubbleChatIcon className="w-4 h-4 mr-2" />
           <span>Give feedback</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

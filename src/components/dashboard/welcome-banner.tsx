@@ -12,7 +12,7 @@ export const WelcomeBanner = () => {
       
       <div className="flex items-center gap-4">
         <Button variant="outline">
-          Deposit AUD
+          Deposit cash
         </Button>
         <Button>
           Trade
