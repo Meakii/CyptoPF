@@ -8,6 +8,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { InformationCircleIcon } from "hugeicons-react";
+
 interface StatsCardProps {
   icon: ElementType;
   label: string;
@@ -49,7 +50,13 @@ export function StatsCard({
             <TooltipProvider delayDuration={20}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <InformationCircleIcon className="h-4 w-4 text-muted-foreground" />
+                  <button 
+                    type="button"
+                    className="p-1 rounded-[var(--radius-md)] hover:bg-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    aria-label={`More information about ${label}`}
+                  >
+                    <InformationCircleIcon className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{info}</p>

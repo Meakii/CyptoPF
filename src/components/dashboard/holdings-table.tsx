@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { InformationCircleIcon, PieChartIcon } from "hugeicons-react";
 import { Link } from "@tanstack/react-router";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import {
@@ -17,7 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info, PieChart } from "lucide-react";
 import { SUPPORTED_CRYPTOCURRENCIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { parseAndFormatCurrency } from "@/lib/currency-utils";
@@ -67,7 +67,7 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
         <div className="w-full justify-between flex flex-row items-start">
           <div className="flex flex-col gap-y-3">
             <div className="flex items-center gap-2">
-              <PieChart className="h-5 w-5 text-[var(--foreground)]" />
+              <PieChartIcon className="h-5 w-5 text-[var(--foreground)]" />
               <h2 className="text-lg font-semibold">Crypto holdings</h2>
             </div>
             {/* <div className="flex items-center gap-3">
@@ -102,13 +102,17 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
                   <TooltipProvider delayDuration={20}>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Info className="h-4 w-4 text-muted-foreground" />
+                        <button
+                          type="button"
+                          className="p-1 rounded-[var(--radius-md)] hover:bg-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                          aria-label={`More information about unrealised profit and loss`}
+                        >
+                          <InformationCircleIcon className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+                        </button>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
-                          Unrealized Profit/Loss represents the potential gain
-                          or loss based on the current market price compared to
-                          your average purchase price
+                        Unrealized P&L is the paper gain or loss on assets you haven't sold yet.
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -137,11 +141,11 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-  <HiddenFigure value={formatBalance(asset.balance)} />
-</TableCell>
-<TableCell className="text-right">
-  <HiddenFigure value={parseAndFormatCurrency(asset.value)} />
-</TableCell>
+                    <HiddenFigure value={formatBalance(asset.balance)} />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <HiddenFigure value={parseAndFormatCurrency(asset.value)} />
+                  </TableCell>
                   <TableCell className="text-right">
                     <div
                       className={cn(
