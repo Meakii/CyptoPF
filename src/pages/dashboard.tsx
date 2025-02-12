@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   ChartLineData01Icon,
   PieChartIcon,
-  DollarCircleIcon
+  DollarCircleIcon,
 } from "hugeicons-react";
 import { TimeFrame } from "@/components/crypto/chart-timeframe";
 import { PortfolioChart } from "@/components/dashboard/portfolio-chart";
@@ -15,6 +15,7 @@ import {
   stripCurrencySymbols,
 } from "@/lib/currency-utils";
 import { StatsCard } from "@/components/dashboard/StatsCard";
+import { HiddenFigure } from "@/components/ui/hide-figures";
 
 const PORTFOLIO_HOLDINGS = [
   { symbol: "BTCUSDT", initialValue: 15000 },
@@ -67,19 +68,31 @@ export function Dashboard() {
               <StatsCard
                 icon={DollarCircleIcon}
                 label="Cash available"
-                value={parseAndFormatCurrency(CASH_AVAILABLE)}
+                value={
+                  <HiddenFigure
+                    value={parseAndFormatCurrency(CASH_AVAILABLE)}
+                  />
+                }
                 info="Your current available cash balance for trading"
               />
               <StatsCard
                 icon={PieChartIcon}
                 label="Crypto holdings value"
-                value={parseAndFormatCurrency(totalCryptoValue)}
+                value={
+                  <HiddenFigure
+                    value={parseAndFormatCurrency(totalCryptoValue)}
+                  />
+                }
                 info="Total value of your cryptocurrency holdings"
               />
               <StatsCard
                 icon={ChartLineData01Icon}
                 label="Portfolio profit & loss"
-                value={`+${parseAndFormatCurrency("2254.24")}`}
+                value={
+                  <HiddenFigure
+                    value={`+${parseAndFormatCurrency("2254.24")}`}
+                  />
+                }
                 valueClassName="text-[var(--uptrend-foreground)]"
                 info="Your total profit/loss across all holdings"
               />

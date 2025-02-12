@@ -3,13 +3,8 @@ import { TimeFrame, ChartTimeFrame } from "@/components/crypto/chart-timeframe";
 import { PriceChart } from "@/components/crypto/price-chart";
 import { cn } from "@/lib/utils";
 import { parseAndFormatCurrency } from "@/lib/currency-utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { InformationCircleIcon } from "hugeicons-react";
+import { HiddenFigure } from "@/components/ui/hide-figures";
+
 interface PortfolioChartProps {
   timeframe: TimeFrame;
   onTimeframeChange: (timeframe: TimeFrame) => void;
@@ -41,19 +36,16 @@ export function PortfolioChart({
 
             <div className="flex items-end gap-4">
               <div className="btcm-heading-xl text-[var(--foreground)]">
-                {parseAndFormatCurrency(totalPortfolioValue)}
+                <HiddenFigure value={parseAndFormatCurrency(totalPortfolioValue)} />
               </div>
 
               <div className="flex items-center gap-2 text-sm">
-                {/* Timeframe Label */}
                 <span className="text-[var(--muted-foreground)]">
                   {timeframe} change
                 </span>
 
-                {/* Divider */}
                 <span className="text-[var(--border)]">|</span>
 
-                {/* Performance Amount */}
                 <span
                   className={cn(
                     "btcm-label-sm-semibold",
@@ -63,13 +55,11 @@ export function PortfolioChart({
                   )}
                 >
                   {isPositiveAmount ? "+" : "-"}
-                  {performanceAmount.replace("-", "")}
+                  <HiddenFigure value={performanceAmount.replace("-", "")} />
                 </span>
 
-                {/* Divider */}
                 <span className="text-[var(--border)]">|</span>
 
-                {/* Performance Percentage */}
                 <span
                   className={cn(
                     "btcm-label-sm",
@@ -79,24 +69,8 @@ export function PortfolioChart({
                   )}
                 >
                   {isPositivePercentage ? "+" : "-"}
-                  {Math.abs(performancePercentage).toFixed(2)}%
+                  <HiddenFigure value={`${Math.abs(performancePercentage).toFixed(2)}%`} />
                 </span>
-
-                {/* <TooltipProvider delayDuration={20}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="text-muted-foreground hover:text-foreground focus:text-foreground transition-colors">
-                        <InformationCircleIcon className="h-4 w-4" />
-                        <span className="sr-only">
-                          More information about P&L
-                        </span>
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>The total value amount of your entire account</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider> */}
               </div>
             </div>
           </div>

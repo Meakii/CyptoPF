@@ -21,6 +21,7 @@ import { Info, PieChart } from "lucide-react";
 import { SUPPORTED_CRYPTOCURRENCIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { parseAndFormatCurrency } from "@/lib/currency-utils";
+import { HiddenFigure } from "@/components/ui/hide-figures";
 
 export interface Holding {
   symbol: string;
@@ -135,12 +136,12 @@ export function HoldingsTable({ holdings }: HoldingsTableProps) {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right ">
-                    {formatBalance(asset.balance)}
-                  </TableCell>
                   <TableCell className="text-right">
-                    {parseAndFormatCurrency(asset.value)}
-                  </TableCell>
+  <HiddenFigure value={formatBalance(asset.balance)} />
+</TableCell>
+<TableCell className="text-right">
+  <HiddenFigure value={parseAndFormatCurrency(asset.value)} />
+</TableCell>
                   <TableCell className="text-right">
                     <div
                       className={cn(

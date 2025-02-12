@@ -1,40 +1,49 @@
 import { ElementType, ComponentProps } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
-  InformationCircleIcon
-} from "hugeicons-react";
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
+import { InformationCircleIcon } from "hugeicons-react";
 interface StatsCardProps {
   icon: ElementType;
   label: string;
-  value: string;
+  value: string | React.ReactNode;
   info?: string;
   className?: string;
-  valueClassName?: string; // ✅ Added missing prop
+  valueClassName?: string;
   iconProps?: ComponentProps<ElementType>;
 }
 
-export function StatsCard({ 
-  icon: Icon, 
-  label, 
-  value, 
-  info, 
+export function StatsCard({
+  icon: Icon,
+  label,
+  value,
+  info,
   className,
-  valueClassName, // ✅ Accept as prop
-  iconProps 
+  valueClassName,
+  iconProps,
 }: StatsCardProps) {
   return (
-    <div className="p-[1px] rounded-[var(--radius-md)] relative 
-    bg-[linear-gradient(71deg,var(--border),var(--color-blue-900),var(--border))]">
-      
-      <Card className={cn(
-        "relative rounded-[var(--radius-md)] p-4 h-full border-0 flex flex-col",
-        className
-      )}>
+    <div
+      className="p-[1px] rounded-[var(--radius-md)] relative 
+    bg-[linear-gradient(71deg,var(--border),var(--color-blue-900),var(--border))]"
+    >
+      <Card
+        className={cn(
+          "relative rounded-[var(--radius-md)] p-4 h-full border-0 flex flex-col",
+          className
+        )}
+      >
         <div className="flex justify-between items-start">
           <div className="flex items-center justify-center size-7 relative">
-            <Icon className="relative z-10 text-[var(--primary)] h-7 w-7" {...iconProps} />
+            <Icon
+              className="relative z-10 text-[var(--primary)] h-7 w-7"
+              {...iconProps}
+            />
           </div>
           {info && (
             <TooltipProvider delayDuration={20}>
@@ -76,16 +85,16 @@ export function StatsCard({
 //   iconProps?: ComponentProps<ElementType>;
 // }
 
-// export function StatsCard({ 
-//   icon: Icon, 
-//   label, 
-//   value, 
-//   info, 
+// export function StatsCard({
+//   icon: Icon,
+//   label,
+//   value,
+//   info,
 //   className,
-//   iconProps 
+//   iconProps
 // }: StatsCardProps) {
 //   return (
-//     <div className="p-[1px] rounded-[var(--radius-md)] relative 
+//     <div className="p-[1px] rounded-[var(--radius-md)] relative
 //     bg-[linear-gradient(71deg,var(--border),var(--color-blue-900),var(--border))]">
 
 //       <Card className={cn(
@@ -105,8 +114,8 @@ export function StatsCard({
 //         </div>
 //         <div className="mt-auto space-y-1">
 //           <p className="text-sm text-muted-foreground">{label}</p>
-//           <HiddenFigure 
-//             value={value} 
+//           <HiddenFigure
+//             value={value}
 //             className="btcm-heading-xl"
 //           />
 //         </div>
@@ -114,4 +123,3 @@ export function StatsCard({
 //     </div>
 //   );
 // }
-
